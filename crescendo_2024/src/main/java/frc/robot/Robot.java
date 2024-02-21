@@ -4,12 +4,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
+//import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,12 +24,21 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
  * directory.
  */
 public class Robot extends TimedRobot {
-  private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
-  private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
-  private final DifferentialDrive m_robotDrive =
-      new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
-  private final XboxController m_controller = new XboxController(0);
-  private final Timer m_timer = new Timer();
+
+  private Command m_autonomousCommand;
+
+  private RobotContainer m_robotContainer;
+
+  private IntakeSubsystem IntakeSubsystem;
+
+  PneumaticsModuleType revph = PneumaticsModuleType.REVPH;
+
+  // private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
+  // private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
+  // private final DifferentialDrive m_robotDrive =
+  //     new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
+  // private final XboxController m_controller = new XboxController(0);
+  // private final Timer m_timer = new Timer();
 
   public Robot() {
     SendableRegistry.addChild(m_robotDrive, m_leftDrive);
