@@ -1,7 +1,7 @@
 //Controls Glossary
 //https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controls-glossary.html#term-setpoint
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
@@ -27,10 +27,8 @@ public class IntakeSubsystem extends SubsystemBase {
     //left joystick for up down movement
 
     public CANSparkMax armNeo;
-    //public CANSparkMax intakeNeo;
-    private SparkPIDController armController;
-    // private RelativeEncoder intakeEncoder; 
-    private RelativeEncoder armEncoder;
+    public CANSparkMax intakeNeo;
+    private RelativeEncoder intakeEncoder; 
 
     //Encoder encoder = new Encoder();
     final double setpoint = 0.0; //find setpoint and replace
@@ -55,28 +53,24 @@ public class IntakeSubsystem extends SubsystemBase {
     
     public IntakeSubsystem () 
     {
-        // intakeNeo = new CANSparkMax(Constants.IntakeConstants.intakeID, CANSparkLowLevel.MotorType.kBrushless);
-        armNeo = new CANSparkMax(Constants.IntakeConstants.armID, CANSparkLowLevel.MotorType.kBrushless);
+        intakeNeo = new CANSparkMax(Constants.IntakeConstants.intakeID, CANSparkLowLevel.MotorType.kBrushless);
         
         //find soft limits
-        // intakeNeo.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-        // intakeNeo.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
+        intakeNeo.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+        intakeNeo.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
         
-        // intakeEncoder = intakeNeo.getEncoder(); //initializes encoder on DIO pins 0 and 1
+        intakeEncoder = intakeNeo.getEncoder(); //initializes encoder on DIO pins 0 and 1
 
-        armController = armNeo.getPIDController(); 
-
-        armEncoder = armNeo.getEncoder();
         
         //encoder.setPositionConversionFactor(360);
         
         
-        // intakeNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        intakeNeo.setIdleMode(CANSparkBase.IdleMode.kBrake);
         
         // encoder.setPosition(Constants.IntakeConstants.open);
-        // intakeNeo.set(0.25);
+        intakeNeo.set(0.25);
         
-        // intakeNeo.burnFlash();
+        intakeNeo.burnFlash();
 
         //random shit
         
@@ -99,48 +93,28 @@ public class IntakeSubsystem extends SubsystemBase {
     //     pid.setSetpoint(setpoint);
     // }
     
-    //Arm position
-    //in RobotContainer --> if-else statement (button pressed --> position in constants)
-    public void setPosition(double pGoal){
-        //armNeo.set(Constants.IntakeConstants.p_speed);
-        //armEncoder.setPositionConversionFactor().setPosition(position);
-
-        double pCurrent = armEncoder.getPosition();
-
-        if(pGoal == Constants.IntakeConstants.p_loading)
-        {
-            if(pCurrent < pGoal)
-            {
-                
-            }
-        }
-    }
 
     //shooting/loading based off of joystick position --> can simplify later
     //define normalize scale 
-    // public void IntakeSpeed (double joystickPosition)
-    // {
-    //     if(joystickPosition > 0.25)
-    //     {
-    //         intakeNeo.set(joystickPosition); //edit
-    //     }
-    //     else if(joystickPosition < -0.25)
-    //     {
-    //         intakeNeo.set(joystickPosition); //edit
-    //     }
-    //     else
-    //         stopIntake();
-    // }
-
-    // public void stopIntake()
-    // {
-    //     intakeNeo.stopMotor();
-    // }
-
-    public void stopArm()
+    public void IntakeSpeed (double joystickPosition)
     {
-        armNeo.stopMotor();
+        if(joystickPosition > 0.25)
+        {
+            intakeNeo.set(joystickPosition); //edit
+        }
+        else if(joystickPosition < -0.25)
+        {
+            intakeNeo.set(joystickPosition); //edit
+        }
+        else
+            stopIntake();
     }
+
+    public void stopIntake()
+    {
+        intakeNeo.stopMotor();
+    }
+
 
     // public void LoadingSpeed() //have speed value inputed or set in command?
     // {

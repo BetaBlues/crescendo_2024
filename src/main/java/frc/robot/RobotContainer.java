@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.ArmConstants;
 //import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.IntakeConstants;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -17,8 +18,10 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.k_xbox;
 // import frc.robot.commands.AutonomousCommand;
 import frc.robot.Commands.DriveCommand;
+import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ChassisSubsystem;
 import frc.robot.Subsystems.ClimbingSubsystem;
+import frc.robot.Subsystems.IntakeSubsystem;
 //import frc.robot.Subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,7 +33,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotContainer {
   private final ChassisSubsystem m_chassis = new ChassisSubsystem();
   // private final AutonomousCommand m_autoCommand = new AutonomousCommand();
-  // private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+  private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final ClimbingSubsystem ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 1, 0);
   
 
@@ -55,31 +59,18 @@ public class RobotContainer {
   }
   
   private void configureButtonBindings() {
-    //add button bindings here
 
     //shooting/loading joystick
-    final Joystick leftJoystick = new Joystick(1);
-      //number = port
+    final Joystick leftJoystick = new Joystick(0);
+    m_chassis.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
-//    m_chassis.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
-    //another way to do it (using raw axis):
-    //shoulderSubsystem.setDefaultCommand(new RunCommand(() -> shoulderSubsystem.move(manipulator.getRawAxis(xboxConstants.rightYAxis) * 0.15), shoulderSubsystem));
-
-    //arm buttons
-// new JoystickButton(manipulator, XboxController.Button.kRightBumper.value)
-// .onTrue(new RunCommand(() -> gripper.move(Constants.gripperConstants.gripperOpenSpeed), gripper)).onFalse(new RunCommand(() -> gripper.stop(), gripper));
-// new JoystickButton(manipulator, XboxController.Button.kLeftBumper.value)
-
-    //final Button aButton = new Button(m_MechanismController, k_xbox.buttonA);
-    // final Button bButton = new Button(m_MechanismController, k_xbox.buttonB);
-    // final Button yButton = new Button(m_MechanismController, k_xbox.buttonY);
-    
+    //arm position
     //loading
-   // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_IntakeSubsystem.setPosition(IntakeConstants.p_loading))).onFalse(new RunCommand(() -> m_IntakeSubsystem.stopArm()));
+    new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
     //shooting
-   // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_IntakeSubsystem.setPosition(IntakeConstants.p_shooting))).onFalse(new RunCommand(() -> m_IntakeSubsystem.stopArm()));
+    new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
     //resting
-   // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_IntakeSubsystem.setPosition(IntakeConstants.p_resting))).onFalse(new RunCommand(() -> m_IntakeSubsystem.stopArm()));
+    new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
     
 
   }
