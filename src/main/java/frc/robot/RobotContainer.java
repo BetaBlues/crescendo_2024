@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class RobotContainer {
   private final ChassisSubsystem m_chassis = new ChassisSubsystem();
-  // private final AutonomousCommand m_autoCommand = new AutonomousCommand();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final ClimbingSubsystem ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 1, 0);
@@ -62,7 +61,7 @@ public class RobotContainer {
 
     //shooting/loading joystick
     final Joystick leftJoystick = new Joystick(0);
-    m_chassis.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
+    m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
     //arm position
     //loading

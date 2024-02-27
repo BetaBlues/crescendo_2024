@@ -100,11 +100,11 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         if(joystickPosition > 0.25)
         {
-            intakeNeo.set(joystickPosition); //edit
+            intakeNeo.set(IntakeConstants.intakeSpeed); 
         }
         else if(joystickPosition < -0.25)
         {
-            intakeNeo.set(joystickPosition); //edit
+            intakeNeo.set(IntakeConstants.outputSpeed); 
         }
         else
             stopIntake();

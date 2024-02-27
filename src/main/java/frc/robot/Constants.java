@@ -101,8 +101,8 @@ public final class Constants {
   
       
   
-      public static final double intakeSpeed = -0.2; //edit
-      public static final double outputSpeed = 0.2; //edit
+      public static final double intakeSpeed = 0.2; //edit
+      public static final double outputSpeed = -0.75; //edit
         // negative = counter-clockwise (?)
         // positive = clockwise (?)
 
