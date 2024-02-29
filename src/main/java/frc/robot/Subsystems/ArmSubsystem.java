@@ -35,7 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     // create a new SPARK MAX and configure it
-    armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, MotorType.kBrushless);
+    armMotor = new CANSparkMax(Constants.ArmConstants.armID, MotorType.kBrushless);
     armMotor.setInverted(false);
     armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
     armMotor.setIdleMode(IdleMode.kBrake);

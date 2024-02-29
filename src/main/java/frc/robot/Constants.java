@@ -24,9 +24,9 @@ public final class Constants {
   
   public final class k_chassis {
     //Chassis Motor ports
-    public final static int leftFrontMotorPort = 2;
-    public final static int rightFrontMotorPort = 5;
-    public final static int rightRearMotorPort = 0;
+    public final static int leftFrontMotorPort = 13;
+    public final static int rightFrontMotorPort = 12;
+    public final static int rightRearMotorPort = 45;
     public final static int leftRearMotorPort = 1;
     // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
     // 2 5 0 1
@@ -63,7 +63,7 @@ public final class Constants {
 
     public static class ArmConstants 
     {
-      public static final int armID = 19;
+      public static final int armID = 15;
       public static final double p_loading = 25; //edit
       public static final double p_shooting = 50; //edit
       public static final double p_resting = 75; //edit
@@ -80,7 +80,7 @@ public final class Constants {
       public static final double kArmGearRatio = 10; //or 0.1
       public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI; // multiply SM value by this number and get arm position in radians
       public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
-      public static final double kArmFreeSpeed = 5676.0 * kVelocityFactor;
+      public static final double kArmFreeSpeed = 50 * kVelocityFactor;
       public static final double kArmZeroCosineOffset = 1.342; // radians to add to converted arm position to get real-world arm position (starts at
       // ~76.9deg angle)
       public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 3.0, 12.0 / kArmFreeSpeed, 0.0);
@@ -94,7 +94,7 @@ public final class Constants {
 
     public static class IntakeConstants {
 
-      public static final int intakeID = 19; //edit
+      public static final int intakeID = 9; //edit
       public static final double intakeP = 0.0;
       public static final double intakeD = 0.0;
       public static final double intakeI = 0.0;

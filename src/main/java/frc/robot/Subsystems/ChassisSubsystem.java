@@ -4,7 +4,12 @@
 
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkLowLevel;
+
+//import com.ctre.phoenix.motorcontrol.can.CANSparkMax;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,18 +29,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class ChassisSubsystem extends SubsystemBase{
   //Creates new Chassis
-  public WPI_VictorSPX leftFrontMotor;
-  public WPI_VictorSPX leftRearMotor;
-  public WPI_VictorSPX rightFrontMotor;
-  public WPI_VictorSPX rightRearMotor;
+  public CANSparkMax leftFrontMotor;
+  public CANSparkMax leftRearMotor;
+  public CANSparkMax rightFrontMotor;
+  public CANSparkMax rightRearMotor;
   private MecanumDrive driveTrain;
   private  ADXRS450_Gyro gyro; 
 
   public ChassisSubsystem() {
-    leftFrontMotor = new WPI_VictorSPX(Constants.k_chassis.leftFrontMotorPort);
-    leftRearMotor = new WPI_VictorSPX(Constants.k_chassis.leftRearMotorPort);
-    rightFrontMotor = new WPI_VictorSPX(Constants.k_chassis.rightFrontMotorPort);
-    rightRearMotor = new WPI_VictorSPX(Constants.k_chassis.rightRearMotorPort);
+    leftFrontMotor = new CANSparkMax(Constants.k_chassis.leftFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
+    leftRearMotor = new CANSparkMax(Constants.k_chassis.leftRearMotorPort, CANSparkLowLevel.MotorType.kBrushed);
+    rightFrontMotor = new CANSparkMax(Constants.k_chassis.rightFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
+    rightRearMotor = new CANSparkMax(Constants.k_chassis.rightRearMotorPort, CANSparkLowLevel.MotorType.kBrushed);
     rightFrontMotor.setInverted(true);
     rightRearMotor.setInverted(true);
     driveTrain = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
