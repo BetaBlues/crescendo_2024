@@ -34,7 +34,7 @@ public class RobotContainer {
   private final ChassisSubsystem m_chassis = new ChassisSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
-  private final ClimbingSubsystem ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 1, 0);
+  // private final ClimbingSubsystem ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 1, 0);
   
 
   //creates controller
@@ -54,7 +54,7 @@ public class RobotContainer {
         m_chassisController.getRawAxis(k_xbox.rightXAxis) * Constants.k_chassis.normalRotationSpeed, 
         gyro.getRotation2d()), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
  
-    new JoystickButton(m_chassisController, k_xbox.buttonA).onTrue(new InstantCommand(() -> ClimbingSubsystem.toggleCommand())); 
+    // new JoystickButton(m_chassisController, k_xbox.buttonA).onTrue(new InstantCommand(() -> ClimbingSubsystem.toggleCommand())); 
   }
   
   private void configureButtonBindings() {

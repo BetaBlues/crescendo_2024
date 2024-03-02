@@ -27,7 +27,7 @@ public final class Constants {
     public final static int leftFrontMotorPort = 13;
     public final static int rightFrontMotorPort = 12;
     public final static int rightRearMotorPort = 45;
-    public final static int leftRearMotorPort = 1;
+    public final static int leftRearMotorPort = 46;
     // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
     // 2 5 0 1
     //chassis speeds
@@ -63,14 +63,14 @@ public final class Constants {
 
     public static class ArmConstants 
     {
-      public static final int armID = 15;
+      //public static final int armID = 15;
       public static final double p_loading = 25; //edit
       public static final double p_shooting = 50; //edit
       public static final double p_resting = 75; //edit
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final int kArmCanId = 2;
+      public static final int kArmCanId = 8;
       public static final boolean kArmInverted = true;
       public static final int kCurrentLimit = 40;
 
