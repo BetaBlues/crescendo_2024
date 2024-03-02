@@ -56,7 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     armMotor.burnFlash();
 
-    m_setpoint = Constants.ArmConstants.kHomePosition;
+    m_setpoint = armEncoder.getPosition();
 
     m_timer = new Timer();
     m_timer.start();
