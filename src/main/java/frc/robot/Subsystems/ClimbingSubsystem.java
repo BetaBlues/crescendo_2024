@@ -2,11 +2,11 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.robot.Constants.ClimbingSubsystemConstants;
 
 public class ClimbingSubsystem {
 
     final DoubleSolenoid armSolenoid; 
-
 
     //move a certain distance to the central april tag
 
@@ -15,7 +15,7 @@ public class ClimbingSubsystem {
     //double prong single length
 
     public ClimbingSubsystem(PneumaticsModuleType module, int forwardChannel, int reverseChannel){
-        armSolenoid = new DoubleSolenoid(module, forwardChannel, reverseChannel);
+        armSolenoid = new DoubleSolenoid(ClimbingSubsystemConstants.canID, module, forwardChannel, reverseChannel);
         armSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 

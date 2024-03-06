@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.time.Instant;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
@@ -34,7 +36,7 @@ public class RobotContainer {
   private final ChassisSubsystem m_chassis = new ChassisSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
-  // private final ClimbingSubsystem ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 1, 0);
+  private final ClimbingSubsystem m_ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1);
   
 
   //creates controller
@@ -54,7 +56,9 @@ public class RobotContainer {
         m_chassisController.getRawAxis(k_xbox.rightXAxis) * Constants.k_chassis.normalRotationSpeed, 
         gyro.getRotation2d()), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
  
-    // new JoystickButton(m_chassisController, k_xbox.buttonA).onTrue(new InstantCommand(() -> ClimbingSubsystem.toggleCommand())); 
+    new JoystickButton(m_MechanismController, k_xbox.buttonB).onTrue(new InstantCommand(() -> m_ClimbingSubsystem.toggleCommand())); 
+
+    m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem));
   }
   
   private void configureButtonBindings() {
@@ -64,13 +68,18 @@ public class RobotContainer {
     m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
     //arm position
-    //loading
-    new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
-    //shooting
-    new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
-    //resting
-    new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
+    // //loading
+    // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
+    // //shooting
+    // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
+    // //resting
+    // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
     
+    //increase setpoint by 0.5
+    new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
+
+    //decrease setpoint by 0.5
+    new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
 
   }
 
