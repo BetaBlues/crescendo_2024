@@ -99,15 +99,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
   }
 
-  //increment shooting position based on recorded resting position
-  public void setTargetShoot(double pGoal)
-  {
-    if(m_setpoint != m_setpoint + ArmConstants.incShooting)
-    {
-      m_setpoint += ArmConstants.incShooting;
-      updateMotionProfile(); 
-    }
-  }
 
   /**
    * Update the motion profile variables based on the current setpoint and the pre-configured motion
