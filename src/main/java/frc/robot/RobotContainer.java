@@ -32,12 +32,13 @@ import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
+
+
 public class RobotContainer {
   private final ChassisSubsystem m_chassis = new ChassisSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final ClimbingSubsystem m_ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1);
-  
 
   //creates controller
   XboxController m_chassisController = new XboxController(1); //connect XboxController to port 1
@@ -67,21 +68,26 @@ public class RobotContainer {
     final Joystick leftJoystick = new Joystick(0);
     m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
+    m_ArmSubsystem.offsetPosition();
+    
     //arm position
     // //loading
-    // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
+    // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(m_ArmSubsystem.position_Loading)));
     // //shooting
-    // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
+    // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(m_ArmSubsystem.position_Shooting)));
     // //resting
-    // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
+    // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(m_ArmSubsystem.position_Resting)));
     
-    //increase setpoint by 0.5
+
+    //increase setpoint by 500
     new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
 
-    //decrease setpoint by 0.5
+    //decrease setpoint by 500
     new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
 
   }
+
+  
 
 
  // public Command getAutonomousCommand() {

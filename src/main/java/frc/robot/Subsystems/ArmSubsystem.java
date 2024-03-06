@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
@@ -31,6 +32,10 @@ public class ArmSubsystem extends SubsystemBase {
   private TrapezoidProfile.State m_targetState;
   private double m_feedforward;
   private double m_manualValue;
+
+  private double m_positionResting;
+  private double m_positionShooting;
+  private double m_positionLoading;
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
@@ -94,6 +99,16 @@ public class ArmSubsystem extends SubsystemBase {
     }
   }
 
+  //increment shooting position based on recorded resting position
+  public void setTargetShoot(double pGoal)
+  {
+    if(m_setpoint != m_setpoint + ArmConstants.incShooting)
+    {
+      m_setpoint += ArmConstants.incShooting;
+      updateMotionProfile(); 
+    }
+  }
+
   /**
    * Update the motion profile variables based on the current setpoint and the pre-configured motion
    * constraints.
@@ -150,4 +165,28 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() { // This method will be called once per scheduler run
   }
+
+  public void offsetPosition() 
+  {
+    m_positionResting = armEncoder.getPosition();
+
+    m_positionShooting = m_positionResting + ArmConstants.incShooting;
+    m_positionLoading = m_positionResting + ArmConstants.incLoading;
+  }
+
+  public void position_Shooting()
+  {
+    setTargetPosition(m_positionShooting);
+  }
+
+  public void position_Loading()
+  {
+    setTargetPosition(m_positionLoading);
+  }
+
+  public void position_Resting()
+  {
+    setTargetPosition(m_positionResting);
+  }
+
 }

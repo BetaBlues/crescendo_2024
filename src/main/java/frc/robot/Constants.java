@@ -71,6 +71,9 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
+      public static final double incShooting = 1500; //edit
+      public static final double incLoading = 2500; //edit
+
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
       public static final int kCurrentLimit = 40;
