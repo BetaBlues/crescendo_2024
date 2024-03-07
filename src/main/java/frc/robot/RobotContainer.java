@@ -7,6 +7,7 @@ package frc.robot;
 import java.time.Instant;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,6 +40,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final ClimbingSubsystem m_ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1);
+  
+  private Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
 
   //creates controller
   XboxController m_chassisController = new XboxController(1); //connect XboxController to port 1
@@ -58,6 +61,7 @@ public class RobotContainer {
         gyro.getRotation2d()), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
  
     new JoystickButton(m_MechanismController, k_xbox.buttonX).onTrue(new InstantCommand(() -> m_ClimbingSubsystem.toggleCommand())); 
+    m_ClimbingSubsystem.setDefaultCommand(new RunCommand(() -> m_ClimbingSubsystem.disableCompressor()));
 
   }
   
