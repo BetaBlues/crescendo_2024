@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
@@ -23,22 +24,27 @@ public class ArmSubsystem extends SubsystemBase {
   private SparkPIDController armController;
   private double m_setpoint;
 
-  private TrapezoidProfile m_profile;
-  private Timer m_timer;
-  private TrapezoidProfile.State m_startState;
-  private TrapezoidProfile.State m_endState;
+  // private TrapezoidProfile m_profile;
+  // private Timer m_timer;
+  // private TrapezoidProfile.State m_startState;
+  // private TrapezoidProfile.State m_endState;
 
-  private TrapezoidProfile.State m_targetState;
-  private double m_feedforward;
-  private double m_manualValue;
+  // private TrapezoidProfile.State m_targetState;
+  // private double m_feedforward;
+  // private double m_manualValue;
+
+  private double m_positionResting;
+  private double m_positionShooting;
+  private double m_positionLoading;
+  private double direction;
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     // create a new SPARK MAX and configure it
-    armMotor = new CANSparkMax(Constants.ArmConstants.armID, MotorType.kBrushless);
+    armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, MotorType.kBrushless);
     armMotor.setInverted(false);
     armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
-    armMotor.setIdleMode(IdleMode.kBrake);
+    armMotor.setIdleMode(IdleMode.kBrake); 
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.ArmConstants.kSoftLimitForward);
@@ -46,7 +52,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // set up the motor encoder including conversion factors to convert to radians and radians per
     // second for position and velocity
-    armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
+    armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); 
     armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
     armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
     armEncoder.setPosition(0.0);
@@ -56,12 +62,30 @@ public class ArmSubsystem extends SubsystemBase {
 
     armMotor.burnFlash();
 
-    m_setpoint = armEncoder.getPosition();
+    m_setpoint = armEncoder.getPosition(); // position = 0 at this point
 
-    m_timer = new Timer();
-    m_timer.start();
+    direction = 0.0;
 
-    updateMotionProfile();
+    // m_timer = new Timer();
+    // m_timer.start();
+
+    // updateMotionProfile();
+  }
+
+  public void inc_setpoint()
+  {
+    setTargetPosition(armEncoder.getPosition() + 1500);
+
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
+  }
+
+  public void dec_setpoint()
+  {
+    setTargetPosition(armEncoder.getPosition() - 1500);
+    
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
   }
 
   /**
@@ -70,22 +94,37 @@ public class ArmSubsystem extends SubsystemBase {
    * @param _setpoint The new target position in radians.
    */
   public void setTargetPosition(double pGoal) {
-    if (m_setpoint != pGoal) {
+    if (armEncoder.getPosition() != pGoal) {
       m_setpoint = pGoal;
-      updateMotionProfile();
+      // updateMotionProfile();
+
+      if(pGoal > armEncoder.getPosition())
+      {
+        direction = 1.0;
+      }
+      else if (pGoal < armEncoder.getPosition())
+      {
+        direction = -1.0;
+      }
+      else
+      {
+        direction = 0;
+      }
+      System.out.println("setting setpoint = " + m_setpoint);
     }
   }
+
 
   /**
    * Update the motion profile variables based on the current setpoint and the pre-configured motion
    * constraints.
    */
-  private void updateMotionProfile() {
-    m_startState = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
-    m_endState = new TrapezoidProfile.State(m_setpoint, 0.0);
-    m_profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint);
-    m_timer.reset();
-  }
+  // private void updateMotionProfile() {
+  //   m_startState = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
+  //   m_endState = new TrapezoidProfile.State(m_setpoint, 0.0);
+  //   m_profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint);
+  //   m_timer.reset();
+  //     }
 
   /**
    * Drives the arm to a position using a trapezoidal motion profile. This function is usually
@@ -95,18 +134,61 @@ public class ArmSubsystem extends SubsystemBase {
    * motion profile. The target position is the last set position with {@code setTargetPosition}.
    */
   public void runAutomatic() {
-    double elapsedTime = m_timer.get();
-    if (m_profile.isFinished(elapsedTime)) {
-      m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
-    } else {
-      m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
+    // double elapsedTime = m_timer.get();
+    double distToTarget = 0;
+
+    distToTarget = m_setpoint - armEncoder.getPosition();
+    if(Math.abs(distToTarget) < 25)
+    {
+      armMotor.stopMotor();
+
+      return;
     }
 
-    m_feedforward =
-        Constants.ArmConstants.kArmFeedforward.calculate(
-            armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
-    armController.setReference(
-        m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
+    if(distToTarget < 0 && direction < 0)
+    {
+      System.out.println("set velocity = " + ArmConstants.velocityUp);
+
+      armMotor.set(ArmConstants.velocityUp);
+    }
+    else if(distToTarget > 0 && direction > 0)
+    {
+      System.out.println("set velocity = " + ArmConstants.velocityDown);
+
+      armMotor.set(ArmConstants.velocityDown);
+    }
+    else
+    {
+      System.out.println("Stop Motor");
+      armMotor.stopMotor();
+    }
+
+    System.out.println("distance to target = " + distToTarget);
+    System.out.println("current position = " + armEncoder.getPosition());
+    System.out.println("setpoint = " + m_setpoint);
+
+    // if (m_profile.isFinished(elapsedTime)) {
+    //   m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+
+    //   System.out.println("setpoint = " + m_setpoint + " finished setpoint");
+    //   System.out.println("current position = " + armEncoder.getPosition());
+
+    //   return;
+    // } 
+    // else {
+    //   m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
+
+    //   
+
+    //   System.out.println("setpoint = " + m_setpoint);
+    //   System.out.println("current position = " + armEncoder.getPosition());
+    // }
+
+    // m_feedforward =
+    //     Constants.ArmConstants.kArmFeedforward.calculate(
+    //         armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
+    // armController.setReference(
+    //     m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
   }
 
   /**
@@ -115,21 +197,45 @@ public class ArmSubsystem extends SubsystemBase {
    *
    * @param _power The motor power to apply.
    */
-  public void runManual(double _power) {
-    // reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and
-    // passively
-    m_setpoint = armEncoder.getPosition();
-    updateMotionProfile();
-    // update the feedforward variable with the newly zero target velocity
-    m_feedforward =
-        Constants.ArmConstants.kArmFeedforward.calculate(
-            armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
-    // set the power of the motor
-    armMotor.set(_power + (m_feedforward / 12.0));
-    m_manualValue = _power; // this variable is only used for logging or debugging if needed
+  // public void runManual(double _power) {
+  //   // reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and
+  //   // passively
+  //   m_setpoint = armEncoder.getPosition();
+  //   updateMotionProfile();
+  //   // update the feedforward variable with the newly zero target velocity
+  //   m_feedforward =
+  //       Constants.ArmConstants.kArmFeedforward.calculate(
+  //           armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
+  //   // set the power of the motor
+  //   armMotor.set(_power + (m_feedforward / 12.0));
+  //   m_manualValue = _power; // this variable is only used for logging or debugging if needed
+  // }
+
+  // @Override
+  // public void periodic() { // This method will be called once per scheduler run
+  // }
+
+  public void offsetPosition() 
+  {
+    m_positionResting = armEncoder.getPosition();
+
+    m_positionShooting = m_positionResting + ArmConstants.incShooting;
+    m_positionLoading = m_positionResting + ArmConstants.incLoading;
   }
 
-  @Override
-  public void periodic() { // This method will be called once per scheduler run
+  public void position_Shooting()
+  {
+    setTargetPosition(m_positionShooting);
   }
+
+  public void position_Loading()
+  {
+    setTargetPosition(m_positionLoading);
+  }
+
+  public void position_Resting()
+  {
+    setTargetPosition(m_positionResting);
+  }
+
 }
