@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.PIDGains;
+import frc.robot.Subsystems.ClimbingSubsystem;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
@@ -27,7 +28,7 @@ public final class Constants {
     public final static int leftFrontMotorPort = 13;
     public final static int rightFrontMotorPort = 12;
     public final static int rightRearMotorPort = 45;
-    public final static int leftRearMotorPort = 1;
+    public final static int leftRearMotorPort = 46;
     // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
     // 2 5 0 1
     //chassis speeds
@@ -63,28 +64,34 @@ public final class Constants {
 
     public static class ArmConstants 
     {
-      public static final int armID = 15;
-      public static final double p_loading = 25; //edit
-      public static final double p_shooting = 50; //edit
-      public static final double p_resting = 75; //edit
+      // public static final int armID = 15;
+      // public static final double p_loading = 25; //edit
+      // public static final double p_shooting = 50; //edit
+      // public static final double p_resting = 75; //edit
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final int kArmCanId = 2;
-      public static final boolean kArmInverted = true;
-      public static final int kCurrentLimit = 40;
+      public static final double incShooting = 4500; //edit
+      public static final double incLoading = 19100; //edit
+      public static final double velocityUp = -0.5; //edit
+      public static final double velocityDown = 0.4; //edit
 
-      public static final double kSoftLimitReverse = -1.15;
-      public static final double kSoftLimitForward = 0.0;
 
-      public static final double kArmGearRatio = 10; //or 0.1
+      public static final int kArmCanId = 8;
+      public static final boolean kArmInverted = false;
+      public static final int kCurrentLimit = 57;
+
+      public static final double kSoftLimitReverse = -25000;
+      public static final double kSoftLimitForward = 35000;
+
+      public static final double kArmGearRatio = 100; //or 0.1
       public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI; // multiply SM value by this number and get arm position in radians
       public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
       public static final double kArmFreeSpeed = 50 * kVelocityFactor;
       public static final double kArmZeroCosineOffset = 1.342; // radians to add to converted arm position to get real-world arm position (starts at
       // ~76.9deg angle)
       public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 3.0, 12.0 / kArmFreeSpeed, 0.0);
-      public static final PIDGains kArmPositionGains = new PIDGains(2.5, 0.0, 0.0);
+      public static final PIDGains kArmPositionGains = new PIDGains(0.4, 0.0, 0.0);
       public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(1.0, 2.0);
 
       public static final double kHomePosition = 0.0;
@@ -117,6 +124,10 @@ public final class Constants {
 
     }
 
+    public static class ClimbingSubsystemConstants {
+      public static final int canID = 21;
+    }
+/* 
 //Estimate Distance
 public static class EstimateDistanceConstants
 {
@@ -155,5 +166,5 @@ public static class LoadingConstants
     public static double desiredDistanceLoading = 43.797; //in inches --> edit
     public static double limelightOffsetFromRobotCenter = 4.625; //in inches
 }
-
+*/
 }
