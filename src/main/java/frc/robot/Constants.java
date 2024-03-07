@@ -71,17 +71,20 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final double incShooting = 1500; //edit
-      public static final double incLoading = 2500; //edit
+      public static final double incShooting = 3700; //edit
+      public static final double incLoading = 18300; //edit
+      public static final double velocityUp = -0.6; //edit
+      public static final double velocityDown = 0.4; //edit
+
 
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
-      public static final int kCurrentLimit = 50;
+      public static final int kCurrentLimit = 57;
 
-      public static final double kSoftLimitReverse = 5;
-      public static final double kSoftLimitForward = 250;
+      public static final double kSoftLimitReverse = -25000;
+      public static final double kSoftLimitForward = 35000;
 
-      public static final double kArmGearRatio = 10; //or 0.1
+      public static final double kArmGearRatio = 100; //or 0.1
       public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI; // multiply SM value by this number and get arm position in radians
       public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
       public static final double kArmFreeSpeed = 50 * kVelocityFactor;

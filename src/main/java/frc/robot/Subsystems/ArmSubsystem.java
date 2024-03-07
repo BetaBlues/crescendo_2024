@@ -37,6 +37,8 @@ public class ArmSubsystem extends SubsystemBase {
   private double m_positionShooting;
   private double m_positionLoading;
 
+  private double direction;
+
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     // create a new SPARK MAX and configure it
@@ -63,15 +65,17 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_setpoint = armEncoder.getPosition();
 
+    direction = 0.0;
+
     m_timer = new Timer();
     m_timer.start();
 
-    updateMotionProfile();
+    // updateMotionProfile();
   }
 
   public void inc_setpoint()
   {
-    setTargetPosition(m_setpoint + 50 );
+    setTargetPosition(armEncoder.getPosition() + 1500);
 
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -79,7 +83,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    setTargetPosition(m_setpoint - 50);
+    setTargetPosition(armEncoder.getPosition() - 1500);
     
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -91,10 +95,22 @@ public class ArmSubsystem extends SubsystemBase {
    * @param _setpoint The new target position in radians.
    */
   public void setTargetPosition(double pGoal) {
-    if (m_setpoint != pGoal) {
+    if (armEncoder.getPosition() != pGoal) {
       m_setpoint = pGoal;
-      updateMotionProfile();
+      // updateMotionProfile();
 
+      if(pGoal > armEncoder.getPosition())
+      {
+        direction = 1.0;
+      }
+      else if (pGoal < armEncoder.getPosition())
+      {
+        direction = -1.0;
+      }
+      else
+      {
+        direction = 0;
+      }
       System.out.println("setting setpoint = " + m_setpoint);
     }
   }
@@ -104,12 +120,12 @@ public class ArmSubsystem extends SubsystemBase {
    * Update the motion profile variables based on the current setpoint and the pre-configured motion
    * constraints.
    */
-  private void updateMotionProfile() {
-    m_startState = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
-    m_endState = new TrapezoidProfile.State(m_setpoint, 0.0);
-    m_profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint);
-    m_timer.reset();
-      }
+  // private void updateMotionProfile() {
+  //   m_startState = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
+  //   m_endState = new TrapezoidProfile.State(m_setpoint, 0.0);
+  //   m_profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint);
+  //   m_timer.reset();
+  //     }
 
   /**
    * Drives the arm to a position using a trapezoidal motion profile. This function is usually
@@ -119,39 +135,62 @@ public class ArmSubsystem extends SubsystemBase {
    * motion profile. The target position is the last set position with {@code setTargetPosition}.
    */
   public void runAutomatic() {
-    double elapsedTime = m_timer.get();
+    // double elapsedTime = m_timer.get();
     double distToTarget = 0;
-    if (m_profile.isFinished(elapsedTime)) {
-      m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
 
-      System.out.println("setpoint = " + m_setpoint + " finished setpoint");
-      System.out.println("current position = " + armEncoder.getPosition());
+    distToTarget = m_setpoint - armEncoder.getPosition();
+    if(Math.abs(distToTarget) < 25)
+    {
+      armMotor.stopMotor();
 
       return;
-    } 
-    else {
-      m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
-
-      distToTarget = Math.abs(m_targetState.position - armEncoder.getPosition());
-      if(distToTarget < 5)
-      {
-        m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
-
-        return;
-      }
-
-      System.out.println("setpoint = " + m_setpoint);
-      System.out.println("current position = " + armEncoder.getPosition());
     }
+
+    if(distToTarget < 0 && direction < 0)
+    {
+      System.out.println("set velocity = " + ArmConstants.velocityUp);
+
+      armMotor.set(ArmConstants.velocityUp);
+    }
+    else if(distToTarget > 0 && direction > 0)
+    {
+      System.out.println("set velocity = " + ArmConstants.velocityDown);
+
+      armMotor.set(ArmConstants.velocityDown);
+    }
+    else
+    {
+      System.out.println("Stop Motor");
+      armMotor.stopMotor();
+    }
+
+    // if (m_profile.isFinished(elapsedTime)) {
+    //   m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+
+    //   System.out.println("setpoint = " + m_setpoint + " finished setpoint");
+    //   System.out.println("current position = " + armEncoder.getPosition());
+
+    //   return;
+    // } 
+    // else {
+    //   m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
+
+    //   
+
+    //   System.out.println("setpoint = " + m_setpoint);
+    //   System.out.println("current position = " + armEncoder.getPosition());
+    // }
 
     
     System.out.println("distance to target = " + distToTarget);
+    System.out.println("current position = " + armEncoder.getPosition());
+    System.out.println("setpoint = " + m_setpoint);
 
-    m_feedforward =
-        Constants.ArmConstants.kArmFeedforward.calculate(
-            armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
-    armController.setReference(
-        m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
+    // m_feedforward =
+    //     Constants.ArmConstants.kArmFeedforward.calculate(
+    //         armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
+    // armController.setReference(
+    //     m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
   }
 
   /**
@@ -160,23 +199,23 @@ public class ArmSubsystem extends SubsystemBase {
    *
    * @param _power The motor power to apply.
    */
-  public void runManual(double _power) {
-    // reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and
-    // passively
-    m_setpoint = armEncoder.getPosition();
-    updateMotionProfile();
-    // update the feedforward variable with the newly zero target velocity
-    m_feedforward =
-        Constants.ArmConstants.kArmFeedforward.calculate(
-            armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
-    // set the power of the motor
-    armMotor.set(_power + (m_feedforward / 12.0));
-    m_manualValue = _power; // this variable is only used for logging or debugging if needed
-  }
+  // public void runManual(double _power) {
+  //   // reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and
+  //   // passively
+  //   m_setpoint = armEncoder.getPosition();
+  //   updateMotionProfile();
+  //   // update the feedforward variable with the newly zero target velocity
+  //   m_feedforward =
+  //       Constants.ArmConstants.kArmFeedforward.calculate(
+  //           armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
+  //   // set the power of the motor
+  //   armMotor.set(_power + (m_feedforward / 12.0));
+  //   m_manualValue = _power; // this variable is only used for logging or debugging if needed
+  // }
 
-  @Override
-  public void periodic() { // This method will be called once per scheduler run
-  }
+  // @Override
+  // public void periodic() { // This method will be called once per scheduler run
+  // }
 
   public void offsetPosition() 
   {
