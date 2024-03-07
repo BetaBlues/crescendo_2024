@@ -65,11 +65,11 @@ public class RobotContainer {
     
     //arm position
     //loading
-    new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
-    //shooting
-    new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
-    //resting
-    new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
+    // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_loading)));
+    // //shooting
+    // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_shooting)));
+    // //resting
+    // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new RunCommand(() -> m_ArmSubsystem.setTargetPosition(ArmConstants.p_resting)));
     
 
   }
