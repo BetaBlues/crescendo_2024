@@ -71,8 +71,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void inc_setpoint()
   {
-    m_setpoint += 50;
-    setTargetPosition(m_setpoint);
+    setTargetPosition(m_setpoint + 50 );
 
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -80,8 +79,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    m_setpoint -= 50;
-    setTargetPosition(m_setpoint);
+    setTargetPosition(m_setpoint - 50);
     
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -96,6 +94,8 @@ public class ArmSubsystem extends SubsystemBase {
     if (m_setpoint != pGoal) {
       m_setpoint = pGoal;
       updateMotionProfile();
+
+      System.out.println("setting setpoint = " + m_setpoint);
     }
   }
 
@@ -109,7 +109,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_endState = new TrapezoidProfile.State(m_setpoint, 0.0);
     m_profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint);
     m_timer.reset();
-  }
+      }
 
   /**
    * Drives the arm to a position using a trapezoidal motion profile. This function is usually
@@ -120,24 +120,32 @@ public class ArmSubsystem extends SubsystemBase {
    */
   public void runAutomatic() {
     double elapsedTime = m_timer.get();
+    double distToTarget = 0;
     if (m_profile.isFinished(elapsedTime)) {
       m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
 
       System.out.println("setpoint = " + m_setpoint + " finished setpoint");
       System.out.println("current position = " + armEncoder.getPosition());
+
+      return;
     } 
     else {
       m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
 
-      double distToTarget = Math.abs(m_targetState.position - armEncoder.getPosition());
+      distToTarget = Math.abs(m_targetState.position - armEncoder.getPosition());
       if(distToTarget < 5)
       {
         m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+
+        return;
       }
 
       System.out.println("setpoint = " + m_setpoint);
       System.out.println("current position = " + armEncoder.getPosition());
     }
+
+    
+    System.out.println("distance to target = " + distToTarget);
 
     m_feedforward =
         Constants.ArmConstants.kArmFeedforward.calculate(
