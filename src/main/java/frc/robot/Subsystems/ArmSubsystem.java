@@ -51,7 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // set up the motor encoder including conversion factors to convert to radians and radians per
     // second for position and velocity
-    armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42);
+    armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); //edit
     armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
     armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
     armEncoder.setPosition(0.0);
@@ -71,7 +71,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void inc_setpoint()
   {
-    m_setpoint += 500;
+    m_setpoint += 50;
     setTargetPosition(m_setpoint);
 
     System.out.println("setpoint = " + m_setpoint);
@@ -80,7 +80,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    m_setpoint -= 500;
+    m_setpoint -= 50;
     setTargetPosition(m_setpoint);
     
     System.out.println("setpoint = " + m_setpoint);
@@ -122,8 +122,21 @@ public class ArmSubsystem extends SubsystemBase {
     double elapsedTime = m_timer.get();
     if (m_profile.isFinished(elapsedTime)) {
       m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
-    } else {
+
+      System.out.println("setpoint = " + m_setpoint + " finished setpoint");
+      System.out.println("current position = " + armEncoder.getPosition());
+    } 
+    else {
       m_targetState = m_profile.calculate(elapsedTime, m_startState, m_endState);
+
+      double distToTarget = Math.abs(m_targetState.position - armEncoder.getPosition());
+      if(distToTarget < 5)
+      {
+        m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+      }
+
+      System.out.println("setpoint = " + m_setpoint);
+      System.out.println("current position = " + armEncoder.getPosition());
     }
 
     m_feedforward =
