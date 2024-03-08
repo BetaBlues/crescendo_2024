@@ -16,8 +16,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
+
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -34,7 +37,7 @@ public class ChassisSubsystem extends SubsystemBase{
   public CANSparkMax rightFrontMotor;
   public CANSparkMax rightRearMotor;
   private MecanumDrive driveTrain;
-  private  ADXRS450_Gyro gyro; 
+  private ADXRS450_Gyro gyro; 
 
   public ChassisSubsystem() {
     leftFrontMotor = new CANSparkMax(Constants.k_chassis.leftFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
@@ -75,9 +78,6 @@ public class ChassisSubsystem extends SubsystemBase{
     driveTrain.driveCartesian(ySpeed, xSpeed, zRotation, gyroAngle);
   }
 
-  public Object driveCartesian(double leftX, double leftY, double rightX, ChassisSubsystem m_chassis) {
-    return null;
-  }
 
   /*public static void setMaxOutput(double maxSpeed) {
     Chassis.setMaxOutput(0.5);
@@ -91,8 +91,6 @@ public class ChassisSubsystem extends SubsystemBase{
 
   
 
-  public void driveFieldOriented(double xSpeed, double ySpeed, double zRotation) {
-  }
 
 
 /*

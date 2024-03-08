@@ -29,12 +29,11 @@ public final class Constants {
     public final static int rightFrontMotorPort = 12;
     public final static int rightRearMotorPort = 45;
     public final static int leftRearMotorPort = 46;
-    // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
-    // 2 5 0 1
+    
     //chassis speeds
-    public final static double normalDriveSpeed = 0.6;
+    public final static double normalDriveSpeed = 0.8; 
     public final static double slowDriveSpeed = 0.5;
-    public final static double normalRotationSpeed = 0.5;
+    public final static double normalRotationSpeed = 0.6;
     public final static double slowRotationSpeed = 0.2;
     
     public final static double inPerSecSpeed = 1; //edit
