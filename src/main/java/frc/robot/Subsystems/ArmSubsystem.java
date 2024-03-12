@@ -11,7 +11,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkRelativeEncoder;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
@@ -22,6 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private RelativeEncoder armEncoder;
   private SparkPIDController armController;
+  
   private double m_setpoint;
 
   // private TrapezoidProfile m_profile;
@@ -44,7 +48,7 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, MotorType.kBrushless);
     armMotor.setInverted(false);
     armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
-    armMotor.setIdleMode(IdleMode.kBrake); 
+    armMotor.setIdleMode(IdleMode.kCoast); 
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.ArmConstants.kSoftLimitForward);
@@ -211,9 +215,12 @@ public class ArmSubsystem extends SubsystemBase {
   //   m_manualValue = _power; // this variable is only used for logging or debugging if needed
   // }
 
-  // @Override
-  // public void periodic() { // This method will be called once per scheduler run
-  // }
+  @Override
+  public void periodic() { 
+    // This method will be called once per scheduler run
+
+    System.out.println("current position: " + armEncoder.getPosition());
+  }
 
   public void offsetPosition() 
   {
