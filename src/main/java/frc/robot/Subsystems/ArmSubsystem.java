@@ -74,7 +74,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void inc_setpoint()
   {
-    setTargetPosition(armEncoder.getPosition() + 1500);
+    //setTargetPosition(armEncoder.getPosition() + 1500);
+    setTargetPosition(Constants.ArmConstants.saw);
 
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -82,8 +83,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    setTargetPosition(armEncoder.getPosition() - 1500);
-    
+    //setTargetPosition(armEncoder.getPosition() - 1500);
+    setTargetPosition(Constants.ArmConstants.see);
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
   }

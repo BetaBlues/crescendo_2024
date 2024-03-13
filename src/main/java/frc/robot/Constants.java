@@ -18,11 +18,15 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public final static boolean hasDrive = false;
+  public final static boolean hasPiston = false;
+  public final static boolean hasIntake = false;
+  public final static boolean hasSeesaw = true;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
+
   public final class k_chassis {
     //Chassis Motor ports
     public final static int leftFrontMotorPort = 13;
@@ -76,10 +80,15 @@ public final class Constants {
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.4; //edit
 
+      public static final double seesawVelUp = -0.0001; //edit
+      public static final double seesawVelDown = 0.0001; //edit
+      public static final double see = 100;
+      public static final double saw = 250;
 
-      public static final int kArmCanId = 8;
+      //public static final int kArmCanId = 8;
+      public static final int kArmCanId = 19;
       public static final boolean kArmInverted = false;
-      public static final int kCurrentLimit = 57;
+      public static final int kCurrentLimit = 20;
 
       public static final double kSoftLimitReverse = -25000;
       public static final double kSoftLimitForward = 35000;
