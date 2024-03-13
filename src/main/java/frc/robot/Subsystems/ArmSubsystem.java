@@ -18,6 +18,9 @@ import frc.PIDGains;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
+
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private RelativeEncoder armEncoder;
@@ -211,9 +214,10 @@ public class ArmSubsystem extends SubsystemBase {
   //   m_manualValue = _power; // this variable is only used for logging or debugging if needed
   // }
 
-  // @Override
-  // public void periodic() { // This method will be called once per scheduler run
-  // }
+  @Override
+  public void periodic() { // This method will be called once per scheduler run
+    System.out.println("current position: " + armEncoder.getPosition());
+  }
 
   public void offsetPosition() 
   {

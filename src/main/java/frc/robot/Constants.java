@@ -6,8 +6,12 @@ package frc.robot;
 
 import frc.PIDGains;
 import frc.robot.Subsystems.ClimbingSubsystem;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,15 +35,55 @@ public final class Constants {
     public final static int leftRearMotorPort = 46;
     
     //chassis speeds
-    public final static double normalDriveSpeed = 0.8; 
-    public final static double slowDriveSpeed = 0.5;
-    public final static double normalRotationSpeed = 0.6;
-    public final static double slowRotationSpeed = 0.2;
+    public final static double normalDriveSpeed = 0.9; 
+    public final static double slowDriveSpeed = 0.8;
+    public final static double normalRotationSpeed = 0.7;
+    public final static double slowRotationSpeed = 0.6;
     
     public final static double inPerSecSpeed = 1; //edit
 
     public final static double gyro = 0;
   }
+
+  
+  public static final class Mecanum{
+
+    public static final double wheelRadius = 0.089; //TODO: wheel radius in meters
+
+    public static final double wheelInset = 0.112; //TODO: how far back the wheel is set in from the frame
+    
+    public static final double frameX = 0.688; //TODO: replace with robot frame widt in meters
+    public static final double frameY = 0.822; //TODO: robot frame length in meters
+    
+    public static final Translation2d[] modulePositions = new Translation2d[]{
+      new Translation2d( ((frameX / 2) - wheelInset), ((frameY / 2) - wheelInset)),
+      new Translation2d( ((frameX / 2 ) - wheelInset), -((frameY / 2) - wheelInset)),
+      new Translation2d( -((frameX / 2) - wheelInset), -((frameY / 2) - wheelInset)),
+      new Translation2d(-((frameX / 2) - wheelInset), ((frameY / 2 - wheelInset)))
+    };
+    
+    /** gear reduction  */
+    public static final double driveGearRatio = 12.75; //TODO: gear reduction from angle motors to wheels
+
+    /** conversion from Neo encoder units to degrees */
+    public static final double relativeConversion = 360.0; 
+
+    public static final class Constraints{//TODO: replace constraints 
+
+      /** max free speed of robot in meters / second */
+      public static final double maxFreeSpeed = 4.60248; 
+
+      /** max accel of robot in meters / second */
+      public static final double maxAcceleration = 2; 
+
+      /** max rotational velocity in deg / second */
+      public static final double maxRotationSpeed = 360; 
+
+      /** max rotational accel in rotations / second */
+      public static final double maxRotationalAcceleration = 1; 
+    }
+  }
+
 
   //wrong
   public final class k_xbox {
@@ -61,6 +105,25 @@ public final class Constants {
         public static final int rightYAxis = 3;
     }
 
+     public static final AprilTagFieldLayout aprilTagFieldLayout =
+      AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+  public final class FieldConstants {
+    public static final Translation2d BLUE_SPEAKER_POSE = new Translation2d(-0.086473, 5.757474);
+    public static final Translation2d RED_SPEAKER_POSE = new Translation2d(16.389722, 5.757474);
+
+    public static Translation2d getSpeaker() {
+      if (DriverStation.getAlliance().isPresent()) {
+        return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+            ? RED_SPEAKER_POSE
+            : BLUE_SPEAKER_POSE;
+      } else {
+        return BLUE_SPEAKER_POSE; // default to blue
+      }
+    }
+  }
+  
+
     public static class ArmConstants 
     {
       // public static final int armID = 15;
@@ -71,7 +134,7 @@ public final class Constants {
       // public static final double p_speedFast = 0.25; //edit 
 
       public static final double incShooting = 4500; //edit
-      public static final double incLoading = 19100; //edit
+      public static final double incLoading = 18800; //edit
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.4; //edit
 

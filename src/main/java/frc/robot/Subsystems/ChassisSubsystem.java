@@ -79,6 +79,11 @@ public class ChassisSubsystem extends SubsystemBase{
   }
 
 
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotation)
+  {
+    driveTrain.driveCartesian(xSpeed, ySpeed, zRotation);
+  }
+
   /*public static void setMaxOutput(double maxSpeed) {
     Chassis.setMaxOutput(0.5);
   }*/

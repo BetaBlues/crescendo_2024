@@ -91,6 +91,11 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    SmartDashboard.putNumber("Front Left Voltage", m_robotContainer.m_chassis.leftFrontMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Front Right Voltage", m_robotContainer.m_chassis.rightFrontMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Back Left Voltage", m_robotContainer.m_chassis.leftRearMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Back Right Voltage", m_robotContainer.m_chassis.rightRearMotor.getOutputCurrent());
+    
     SmartDashboard.putNumber("Voltage", pdh.getVoltage()); 
     SmartDashboard.putNumber("Gyro Direction", m_robotContainer.gyro.getAngle()); 
   }
@@ -105,7 +110,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
