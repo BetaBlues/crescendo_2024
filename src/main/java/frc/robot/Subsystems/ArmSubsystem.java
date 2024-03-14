@@ -72,7 +72,7 @@ public class ArmSubsystem extends SubsystemBase {
     // updateMotionProfile();
   }
 
-  public void inc_setpoint()
+  public void moveToSawPosition()
   {
     //setTargetPosition(armEncoder.getPosition() + 1500);
     setTargetPosition(Constants.ArmConstants.saw);
@@ -81,7 +81,7 @@ public class ArmSubsystem extends SubsystemBase {
     System.out.println("current position = " + armEncoder.getPosition());
   }
 
-  public void dec_setpoint()
+  public void moveToSeePosition()
   {
     //setTargetPosition(armEncoder.getPosition() - 1500);
     setTargetPosition(Constants.ArmConstants.see);
@@ -145,18 +145,18 @@ public class ArmSubsystem extends SubsystemBase {
 
       return;
     }
-
+  if(Constants.hasSeesaw)
     if(distToTarget < 0 && direction < 0)
     {
-      System.out.println("set velocity = " + ArmConstants.velocityUp);
+      System.out.println("set velocity = " + ArmConstants.seesawVelUp);
 
-      armMotor.set(ArmConstants.velocityUp);
+      armMotor.set(ArmConstants.seesawVelUp);
     }
     else if(distToTarget > 0 && direction > 0)
     {
-      System.out.println("set velocity = " + ArmConstants.velocityDown);
+      System.out.println("set velocity = " + ArmConstants.seesawVelDown);
 
-      armMotor.set(ArmConstants.velocityDown);
+      armMotor.set(ArmConstants.seesawVelDown);
     }
     else
     {
@@ -164,6 +164,25 @@ public class ArmSubsystem extends SubsystemBase {
       armMotor.stopMotor();
     }
 
+  // if(Constants.hasArm)
+  //   if(distToTarget < 0 && direction < 0)
+  //   {
+  //     System.out.println("set velocity = " + ArmConstants.velocityUp);
+
+  //     armMotor.set(ArmConstants.velocityUp);
+  //   }
+  //   else if(distToTarget > 0 && direction > 0)
+  //   {
+  //     System.out.println("set velocity = " + ArmConstants.velocityDown);
+
+  //     armMotor.set(ArmConstants.velocityDown);
+  //   }
+  //   else
+  //   {
+  //     System.out.println("Stop Motor");
+  //     armMotor.stopMotor();
+  //   }
+    
     System.out.println("distance to target = " + distToTarget);
     System.out.println("current position = " + armEncoder.getPosition());
     System.out.println("setpoint = " + m_setpoint);
