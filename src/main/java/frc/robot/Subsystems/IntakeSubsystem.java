@@ -26,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //triggers for shoot/take it
     //left joystick for up down movement
 
-    public CANSparkMax intakeNeo;
+    public static CANSparkMax intakeNeo;
     private RelativeEncoder intakeEncoder; 
 
     //Encoder encoder = new Encoder();

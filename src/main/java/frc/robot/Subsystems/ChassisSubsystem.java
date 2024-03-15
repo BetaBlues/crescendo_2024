@@ -4,6 +4,9 @@
 
 package frc.robot.Subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.revrobotics.CANSparkLowLevel;
 
 //import com.ctre.phoenix.motorcontrol.can.CANSparkMax;
@@ -91,6 +94,13 @@ public class ChassisSubsystem extends SubsystemBase{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public Command followPathCommand(String pathName){
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+    return AutoBuilder.followPath(path);
+
   }
 
 

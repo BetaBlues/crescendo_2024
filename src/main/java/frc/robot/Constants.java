@@ -112,6 +112,9 @@ public final class Constants {
     public static final Translation2d BLUE_SPEAKER_POSE = new Translation2d(-0.086473, 5.757474);
     public static final Translation2d RED_SPEAKER_POSE = new Translation2d(16.389722, 5.757474);
 
+    public static final Translation2d BLUE_AMP_POSE = new Translation2d(0 , 0); //TODO: amp poses
+    public static final Translation2d RED_AMP_POSE = new Translation2d(0 , 0);
+
     public static Translation2d getSpeaker() {
       if (DriverStation.getAlliance().isPresent()) {
         return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
@@ -119,6 +122,16 @@ public final class Constants {
             : BLUE_SPEAKER_POSE;
       } else {
         return BLUE_SPEAKER_POSE; // default to blue
+      }
+    }
+
+    public static Translation2d getAmp(){
+      if(DriverStation.getAlliance().isPresent()){
+        return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+          ? RED_AMP_POSE
+          : BLUE_SPEAKER_POSE;
+      } else{
+        return BLUE_AMP_POSE; 
       }
     }
   }
