@@ -52,7 +52,7 @@ public class RobotContainer {
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final ClimbingSubsystem m_ClimbingSubsystem = new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1);
 
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private final LoggedDashboardChooser<Command> autoChooser;
   // private Compressor m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
   //creates controller
@@ -80,15 +80,21 @@ public class RobotContainer {
     // m_ClimbingSubsystem.setDefaultCommand(new RunCommand(() -> m_ClimbingSubsystem.disableCompressor()));
 
 
-    AutoBuilder.buildAutoChooser(); 
+    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser()); 
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser.addOption("Taxi", NamedCommands.getCommand("Taxi"));
+   
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
 
-    NamedCommands.registerCommand("Taxi", DriveAutos.manualLeave(m_chassis));
-    //NamedCommands.registerCommand("One piece amp", );
+    registerAutoCommands(); 
 
   
+  }
+
+  public void registerAutoCommands(){
+      NamedCommands.registerCommand("Taxi", DriveAutos.manualLeave(m_chassis));
+    //NamedCommands.registerCommand("One piece amp", );
   }
   
   

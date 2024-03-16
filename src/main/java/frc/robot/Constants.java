@@ -6,6 +6,9 @@ package frc.robot;
 
 import frc.PIDGains;
 import frc.robot.Subsystems.ClimbingSubsystem;
+
+import java.sql.Driver;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -115,6 +118,9 @@ public final class Constants {
     public static final Translation2d BLUE_AMP_POSE = new Translation2d(0 , 0); //TODO: amp poses
     public static final Translation2d RED_AMP_POSE = new Translation2d(0 , 0);
 
+    public static final Translation2d BLUE_SOURCE_POSE = new Translation2d(0,0); //TODO: source poses
+    public static final Translation2d RED_SOURCE_POSE = new Translation2d(0,0); 
+
     public static Translation2d getSpeaker() {
       if (DriverStation.getAlliance().isPresent()) {
         return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
@@ -129,9 +135,19 @@ public final class Constants {
       if(DriverStation.getAlliance().isPresent()){
         return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
           ? RED_AMP_POSE
-          : BLUE_SPEAKER_POSE;
+          : BLUE_AMP_POSE;
       } else{
         return BLUE_AMP_POSE; 
+      }
+    }
+
+    public static Translation2d getSource(){
+      if(DriverStation.getAlliance().isPresent()){
+        return DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+        ? RED_SOURCE_POSE
+        : BLUE_SOURCE_POSE; 
+      }else{
+        return BLUE_SOURCE_POSE; 
       }
     }
   }

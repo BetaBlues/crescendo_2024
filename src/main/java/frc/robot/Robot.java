@@ -93,12 +93,12 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+/* 
     SmartDashboard.putNumber("Front Left Voltage", m_robotContainer.m_chassis.leftFrontMotor.getOutputCurrent());
     SmartDashboard.putNumber("Front Right Voltage", m_robotContainer.m_chassis.rightFrontMotor.getOutputCurrent());
     SmartDashboard.putNumber("Back Left Voltage", m_robotContainer.m_chassis.leftRearMotor.getOutputCurrent());
     SmartDashboard.putNumber("Back Right Voltage", m_robotContainer.m_chassis.rightRearMotor.getOutputCurrent());
-    
+    */
     SmartDashboard.putNumber("Voltage", pdh.getVoltage()); 
     SmartDashboard.putNumber("Gyro Direction", m_robotContainer.gyro.getAngle()); 
   }

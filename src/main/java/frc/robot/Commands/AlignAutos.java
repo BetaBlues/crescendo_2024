@@ -22,5 +22,17 @@ public class AlignAutos {
         return alignAmp;
     }
 
+    public static Command alignSource(ChassisSubsystem chassis){
+
+        Pose2d poseSource = new Pose2d(Constants.FieldConstants.getSource(), new Rotation2d());
+        
+        Command alignSource = AutoAlign.withNav(poseSource);
+        
+        return alignSource; 
+
+        
+
+    }
+
 
 }
