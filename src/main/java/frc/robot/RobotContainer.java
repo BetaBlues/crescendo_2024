@@ -38,7 +38,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotContainer {
   private final ChassisSubsystem m_chassis = Constants.hasDrive ?  new ChassisSubsystem() : null;
   private final IntakeSubsystem m_IntakeSubsystem = Constants.hasIntake ? new IntakeSubsystem() : null;
-  private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
+  private final ArmSubsystem m_ArmSubsystem = Constants.hasArm ? new ArmSubsystem() : null;
   private final ClimbingSubsystem m_ClimbingSubsystem = Constants.hasPiston ? new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1) : null;
   
   private Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
@@ -60,7 +60,7 @@ public class RobotContainer {
       m_chassis.setDefaultCommand(new RunCommand(() -> m_chassis.driveCartesian(
           m_chassisController.getRawAxis(k_xbox.leftYAxis) * Constants.k_chassis.normalDriveSpeed,
           m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
-          m_chassisController.getRawAxis(k_xbox.rightXAxis) * Constants.k_chassis.normalRotationSpeed, 
+          m_chassisController.getRawAxis(k_xbox.rightXAxis) * -1 * Constants.k_chassis.normalRotationSpeed, 
           gyro.getRotation2d()), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
     }
     if (Constants.hasPiston)
@@ -96,8 +96,8 @@ public class RobotContainer {
     // //decrease setpoint by 500
     if (Constants.hasSeesaw)
     {
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
-      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.goToSaw()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.goToSee()));
       m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
     }
   }
