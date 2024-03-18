@@ -20,14 +20,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public final class Constants {
   public final static boolean hasDrive = true;
   public final static boolean hasPiston = false;
-  public final static boolean hasIntake = false;
-<<<<<<< HEAD
+  public final static boolean hasIntake = true;
   public final static boolean hasSeesaw = false;
-  public final static boolean hasArm = false;
-=======
-  public final static boolean hasSeesaw = true;
   public final static boolean hasArm = true;
->>>>>>> 7187989abef994cb4715d8132a428215c65954bf
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -92,7 +87,7 @@ public final class Constants {
       public static final double saw = 600;
 
       //public static final int kArmCanId = 8;
-      public static final int kArmCanId = 19;
+      public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
       public static final int kCurrentLimit = 20;
 

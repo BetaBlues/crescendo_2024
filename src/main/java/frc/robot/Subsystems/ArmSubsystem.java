@@ -72,11 +72,7 @@ public class ArmSubsystem extends SubsystemBase {
     // updateMotionProfile();
   }
 
-<<<<<<< HEAD
-  public void goToSaw()
-=======
   public void moveToSawPosition()
->>>>>>> 7187989abef994cb4715d8132a428215c65954bf
   {
     //setTargetPosition(armEncoder.getPosition() + 1500);
     setTargetPosition(Constants.ArmConstants.saw);
@@ -85,11 +81,7 @@ public class ArmSubsystem extends SubsystemBase {
     System.out.println("current position = " + armEncoder.getPosition());
   }
 
-<<<<<<< HEAD
-  public void goToSee()
-=======
   public void moveToSeePosition()
->>>>>>> 7187989abef994cb4715d8132a428215c65954bf
   {
     //setTargetPosition(armEncoder.getPosition() - 1500);
     setTargetPosition(Constants.ArmConstants.see);
@@ -153,29 +145,6 @@ public class ArmSubsystem extends SubsystemBase {
 
       return;
     }
-<<<<<<< HEAD
-    if (Constants.hasArm)
-    {
-      if(distToTarget < 0 && direction < 0)
-      {
-        System.out.println("set velocity = " + ArmConstants.velocityUp);
-
-        armMotor.set(ArmConstants.velocityUp);
-      }
-      else if(distToTarget > 0 && direction > 0)
-      {
-        System.out.println("set velocity = " + ArmConstants.velocityDown);
-
-        armMotor.set(ArmConstants.velocityDown);
-      }
-      else
-      {
-        System.out.println("Stop Motor");
-        armMotor.stopMotor();
-      }
-      }
-    if (Constants.hasSeesaw)
-=======
   if(Constants.hasSeesaw)
     if(distToTarget < 0 && direction < 0)
     {
@@ -190,7 +159,6 @@ public class ArmSubsystem extends SubsystemBase {
       armMotor.set(ArmConstants.seesawVelDown);
     }
     else
->>>>>>> 7187989abef994cb4715d8132a428215c65954bf
     {
       if(distToTarget < 0 && direction < 0)
       {
