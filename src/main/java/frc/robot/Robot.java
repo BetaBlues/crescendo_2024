@@ -5,7 +5,7 @@
 package frc.robot;
 
 //import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.TimedRobot;
+// import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.TimedRobot;
 
 
 
@@ -29,7 +28,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * the package after creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends TimedRobot {
+public class Robot /*extends TimedRobot*/ {
 
   private Command m_autonomousCommand;
 
