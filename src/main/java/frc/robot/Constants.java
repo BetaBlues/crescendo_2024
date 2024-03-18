@@ -21,8 +21,13 @@ public final class Constants {
   public final static boolean hasDrive = true;
   public final static boolean hasPiston = false;
   public final static boolean hasIntake = false;
+<<<<<<< HEAD
   public final static boolean hasSeesaw = false;
   public final static boolean hasArm = false;
+=======
+  public final static boolean hasSeesaw = true;
+  public final static boolean hasArm = true;
+>>>>>>> 7187989abef994cb4715d8132a428215c65954bf
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -78,8 +83,8 @@ public final class Constants {
 
       public static final double incShooting = 4500; //edit
       public static final double incLoading = 19100; //edit
-      public static final double velocityUp = -0.5; //edit
-      public static final double velocityDown = 0.4; //edit
+      public static final double velocityUp = -0.05; //edit
+      public static final double velocityDown = 0.05; //edit
 
       public static final double seesawVelUp = -0.03; //edit
       public static final double seesawVelDown = 0.03; //edit

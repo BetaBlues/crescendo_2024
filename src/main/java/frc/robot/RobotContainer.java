@@ -96,8 +96,13 @@ public class RobotContainer {
     // //decrease setpoint by 500
     if (Constants.hasSeesaw)
     {
+<<<<<<< HEAD
       new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.goToSaw()));
       new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.goToSee()));
+=======
+      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.moveToSawPosition()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.moveToSeePosition()));
+>>>>>>> 7187989abef994cb4715d8132a428215c65954bf
       m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
     }
   }
