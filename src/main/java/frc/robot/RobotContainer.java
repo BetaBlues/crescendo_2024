@@ -41,7 +41,7 @@ public class RobotContainer {
   private final ArmSubsystem m_ArmSubsystem = Constants.hasArm ? new ArmSubsystem() : null;
   private final ClimbingSubsystem m_ClimbingSubsystem = Constants.hasPiston ? new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1) : null;
   
-  private Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
+  // private Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
 
   //creates controller
   XboxController m_chassisController = new XboxController(1); //connect XboxController to port 1
