@@ -43,7 +43,7 @@ public class ArmSubsystem extends SubsystemBase {
     // create a new SPARK MAX and configure it
     armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, MotorType.kBrushless);
     armMotor.setInverted(false);
-    armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
+    armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimitArm); //edit depending on arm vs seesaw
     armMotor.setIdleMode(IdleMode.kBrake); 
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -145,32 +145,31 @@ public class ArmSubsystem extends SubsystemBase {
 
       return;
     }
-  if(Constants.hasSeesaw)
     if(distToTarget < 0 && direction < 0)
     {
-      System.out.println("set velocity = " + ArmConstants.seesawVelUp);
+      System.out.println("set velocity = " + ArmConstants.velocityUp);
 
-      armMotor.set(ArmConstants.seesawVelUp);
+      armMotor.set(ArmConstants.velocityUp);
     }
     else if(distToTarget > 0 && direction > 0)
     {
-      System.out.println("set velocity = " + ArmConstants.seesawVelDown);
+      System.out.println("set velocity = " + ArmConstants.velocityDown);
 
-      armMotor.set(ArmConstants.seesawVelDown);
+      armMotor.set(ArmConstants.velocityDown);
     }
     else
     {
       if(distToTarget < 0 && direction < 0)
       {
-        System.out.println("set velocity = " + ArmConstants.seesawVelUp);
+        System.out.println("set velocity = " + ArmConstants.velocityUp);
 
-        armMotor.set(ArmConstants.seesawVelUp);
+        armMotor.set(ArmConstants.velocityUp);
       }
       else if(distToTarget > 0 && direction > 0)
       {
-        System.out.println("set velocity = " + ArmConstants.seesawVelDown);
+        System.out.println("set velocity = " + ArmConstants.velocityDown);
 
-        armMotor.set(ArmConstants.seesawVelDown);
+        armMotor.set(ArmConstants.velocityDown);
       }
       else
       {

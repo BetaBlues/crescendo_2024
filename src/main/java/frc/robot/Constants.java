@@ -78,8 +78,8 @@ public final class Constants {
 
       public static final double incShooting = 4500; //edit
       public static final double incLoading = 19100; //edit
-      public static final double velocityUp = -0.05; //edit
-      public static final double velocityDown = 0.05; //edit
+      public static final double velocityUp = -0.5; //edit
+      public static final double velocityDown = 0.3; //edit
 
       public static final double seesawVelUp = -0.03; //edit
       public static final double seesawVelDown = 0.03; //edit
@@ -89,7 +89,8 @@ public final class Constants {
       //public static final int kArmCanId = 8;
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
-      public static final int kCurrentLimit = 20;
+      public static final int kCurrentLimitArm = 45;
+      public static final int kCurrentLimitSeesaw = 20;
 
       public static final double kSoftLimitReverse = -25000;
       public static final double kSoftLimitForward = 35000;

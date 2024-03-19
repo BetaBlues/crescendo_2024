@@ -59,7 +59,7 @@ public class RobotContainer {
     
       m_chassis.setDefaultCommand(new RunCommand(() -> m_chassis.driveCartesian(
           m_chassisController.getRawAxis(k_xbox.leftYAxis) * Constants.k_chassis.normalDriveSpeed,
-          m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
+          -m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
           m_chassisController.getRawAxis(k_xbox.rightXAxis) * -1 * Constants.k_chassis.normalRotationSpeed, 
           gyro.getRotation2d()), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
     }
