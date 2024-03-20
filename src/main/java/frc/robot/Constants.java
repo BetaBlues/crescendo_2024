@@ -76,8 +76,8 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final double incShooting = 4500; //edit
-      public static final double incLoading = 19100; //edit
+      public static final double incShooting = 6500; //edit
+      public static final double incLoading = 19300; //edit
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.3; //edit
 
@@ -119,8 +119,8 @@ public final class Constants {
   
       
   
-      public static final double intakeSpeed = 0.2; //edit
-      public static final double outputSpeed = -0.75; //edit
+      public static final double intakeSpeed = 0.75; //edit
+      public static final double outputSpeed = -0.2; //edit
         // negative = counter-clockwise (?)
         // positive = clockwise (?)
 
