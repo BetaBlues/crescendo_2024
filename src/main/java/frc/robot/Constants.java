@@ -19,7 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public final static boolean hasDrive = true;
-  public final static boolean hasPiston = false;
+  public final static boolean hasPiston = true;
   public final static boolean hasIntake = true;
   public final static boolean hasSeesaw = false;
   public final static boolean hasArm = true;
