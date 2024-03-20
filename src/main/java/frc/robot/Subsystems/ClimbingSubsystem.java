@@ -1,7 +1,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.CAN;
+// import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -10,7 +10,7 @@ import frc.robot.Constants.ClimbingSubsystemConstants;
 public class ClimbingSubsystem extends SubsystemBase {
 
     final DoubleSolenoid armSolenoid; 
-    final Compressor m_compressor;
+    // final Compressor m_compressor;
 
     //move a certain distance to the central april tag
 
@@ -22,17 +22,17 @@ public class ClimbingSubsystem extends SubsystemBase {
         armSolenoid = new DoubleSolenoid(ClimbingSubsystemConstants.canID, module, forwardChannel, reverseChannel);
         armSolenoid.set(DoubleSolenoid.Value.kReverse);
 
-        m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+        // m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     }
 
     public void disableCompressor() 
     {
-        double pressure = m_compressor.getPressure();
+        // double pressure = m_compressor.getPressure();
 
-        if(pressure > 118)
-        {
-            m_compressor.disable();
-        }
+        // if(pressure > 118)
+        // {
+        //     m_compressor.disable();
+        // }
     }
 
 

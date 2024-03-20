@@ -65,7 +65,7 @@ public class RobotContainer {
     if (Constants.hasPiston)
     {
       new JoystickButton(m_MechanismController, k_xbox.buttonX).onTrue(new InstantCommand(() -> m_ClimbingSubsystem.toggleCommand())); 
-      m_ClimbingSubsystem.setDefaultCommand(new RunCommand(() -> m_ClimbingSubsystem.disableCompressor()));
+      // m_ClimbingSubsystem.setDefaultCommand(new RunCommand(() -> m_ClimbingSubsystem.disableCompressor()));
     }
   }
   

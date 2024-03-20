@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.*;
@@ -34,9 +35,11 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private PowerDistribution pdh;
+
 //  private IntakeSubsystem m_IntakeSubsystem;
 
-  PneumaticsModuleType revph = PneumaticsModuleType.REVPH;
+  PneumaticsModuleType ctrepcm = PneumaticsModuleType.CTREPCM;
 
   // private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
   // private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
@@ -69,7 +72,7 @@ public class Robot extends TimedRobot {
     CameraServer.startAutomaticCapture();
     //extendArmCommand = new ExtendArmCommand(armSubsystem);
 
-
+    pdh = new PowerDistribution();
   }
 
   /**
