@@ -75,6 +75,10 @@ public class ChassisSubsystem extends SubsystemBase{
     driveTrain.driveCartesian(ySpeed, xSpeed, zRotation, gyroAngle);
   }
 
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotation) {
+    driveTrain.driveCartesian(ySpeed, xSpeed, zRotation);
+  }
+
   public Object driveCartesian(double leftX, double leftY, double rightX, ChassisSubsystem m_chassis) {
     return null;
   }

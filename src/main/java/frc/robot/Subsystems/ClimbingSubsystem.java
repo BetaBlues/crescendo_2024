@@ -22,7 +22,7 @@ public class ClimbingSubsystem extends SubsystemBase {
         armSolenoid = new DoubleSolenoid(ClimbingSubsystemConstants.canID, module, forwardChannel, reverseChannel);
         armSolenoid.set(DoubleSolenoid.Value.kReverse);
 
-        m_compressor = new Compressor(PneumaticsModuleType.REVPH);
+        m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     }
 
     public void disableCompressor() 
