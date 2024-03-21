@@ -26,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //triggers for shoot/take it
     //left joystick for up down movement
 
-    public CANSparkMax intakeNeo;
+    private CANSparkMax intakeNeo;
     private RelativeEncoder intakeEncoder; 
 
     //Encoder encoder = new Encoder();
@@ -106,13 +106,15 @@ public class IntakeSubsystem extends SubsystemBase {
             intakeNeo.set(IntakeConstants.intakeSpeed); 
         }
         else
-            stopIntake();
+        {
+            intakeNeo.stopMotor();
+        }
     }
 
-    public void stopIntake()
-    {
-        intakeNeo.stopMotor();
-    }
+    // public void stopIntake()
+    // {
+    //     intakeNeo.stopMotor();
+    // }
 
 
     // public void LoadingSpeed() //have speed value inputed or set in command?

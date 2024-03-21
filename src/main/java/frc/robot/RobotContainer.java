@@ -71,27 +71,29 @@ public class RobotContainer {
     if (Constants.hasIntake)
     {
       //shooting/loading joystick
-      final Joystick leftJoystick = new Joystick(0);
-      m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
+      // final Joystick leftJoystick = new Joystick(0);
+      m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(m_MechanismController.getLeftY()), m_IntakeSubsystem));
     }
 
     if(Constants.hasArm)
     {
+      // final Joystick rightJoystick = new Joystick(5);
+      m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.MoveArm(m_MechanismController.getRightY()), m_ArmSubsystem));
+
       m_ArmSubsystem.offsetPosition();
 
       //arm position                                                                                                                                                      --
-      // //loading
-      // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
-      // //shooting
-      // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
-      // // //resting
-      // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
+      //loading
+      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
+      //shooting
+      new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
+      // //resting
+      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
 
-      
-      new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
+      // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
+      // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
 
-      m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
+      // m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
     }
 
     if (Constants.hasSeesaw)

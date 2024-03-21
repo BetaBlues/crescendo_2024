@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
@@ -81,32 +82,32 @@ public class ArmSubsystem extends SubsystemBase {
     //setTargetPosition(armEncoder.getPosition() + 1500);
     setTargetPosition(Constants.ArmConstants.saw);
 
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
+    // System.out.println("setpoint = " + m_setpoint);
+    // System.out.println("current position = " + armEncoder.getPosition());
   }
 
   public void moveToSeePosition()
   {
     //setTargetPosition(armEncoder.getPosition() - 1500);
     setTargetPosition(Constants.ArmConstants.see);
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
+    // System.out.println("setpoint = " + m_setpoint);
+    // System.out.println("current position = " + armEncoder.getPosition());
   }
 
   public void inc_setpoint()
   {
     setTargetPosition(armEncoder.getPosition() + 1000);
 
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
+    // System.out.println("setpoint = " + m_setpoint);
+    // System.out.println("current position = " + armEncoder.getPosition());
   }
 
   public void dec_setpoint()
   {
     setTargetPosition(armEncoder.getPosition() - 1000);
     
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
+    // System.out.println("setpoint = " + m_setpoint);
+    // System.out.println("current position = " + armEncoder.getPosition());
   }
 
   /**
@@ -168,25 +169,41 @@ public class ArmSubsystem extends SubsystemBase {
    
     if(distToTarget < 0 && direction < 0)
     {
-      System.out.println("set velocity = " + ArmConstants.velocityUp);
+      // System.out.println("set velocity = " + ArmConstants.velocityUp);
 
       armMotor.set(ArmConstants.velocityUp);
     }
     else if(distToTarget > 0 && direction > 0)
     {
-      System.out.println("set velocity = " + ArmConstants.velocityDown);
+      // System.out.println("set velocity = " + ArmConstants.velocityDown);
 
       armMotor.set(ArmConstants.velocityDown);
     }
     else
     {
-      System.out.println("Stop Motor");
+      // System.out.println("Stop Motor");
       armMotor.stopMotor();
     }
     
-    System.out.println("distance to target = " + distToTarget);
-    System.out.println("current position = " + armEncoder.getPosition());
-    System.out.println("setpoint = " + m_setpoint);
+    // System.out.println("distance to target = " + distToTarget);
+    // System.out.println("current position = " + armEncoder.getPosition());
+    // System.out.println("setpoint = " + m_setpoint);
+  }
+
+  public void MoveArm (double joystickPosition)
+  {
+      if(joystickPosition > 0.25)
+      {
+          armMotor.set(ArmConstants.velocityUp); 
+      }
+      else if(joystickPosition < -0.25)
+      {
+          armMotor.set(ArmConstants.velocityDown); 
+      }
+      else
+      {
+        armMotor.stopMotor();
+      }
   }
 
   // if(Constants.hasArm)
