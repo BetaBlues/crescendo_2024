@@ -21,7 +21,7 @@ public final class Constants {
   public final static boolean hasDrive = true;
   public final static boolean hasPiston = false;
   public final static boolean hasIntake = true;
-  public final static boolean hasSeesaw = false;
+  public final static boolean hasSeesaw = true;
   public final static boolean hasArm = true;
 
   public static class OperatorConstants {
@@ -81,16 +81,11 @@ public final class Constants {
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.3; //edit
 
-      public static final double seesawVelUp = -0.03; //edit
-      public static final double seesawVelDown = 0.03; //edit
-      public static final double see = 300;
-      public static final double saw = 600;
 
-      //public static final int kArmCanId = 8;
+
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
       public static final int kCurrentLimitArm = 45;
-      public static final int kCurrentLimitSeesaw = 20;
 
       public static final double kSoftLimitReverse = -25000;
       public static final double kSoftLimitForward = 35000;
@@ -108,6 +103,23 @@ public final class Constants {
       public static final double kHomePosition = 0.0;
       public static final double kScoringPosition = 0.0;
       public static final double kIntakePosition = -1.17;
+    }
+
+    public static class SeeSawConstants {
+      
+      public static final int kCanId = 19;
+      public static final int kCurrentLimit = 20;
+
+      public static final PIDGains kPIDGains = new PIDGains(0.4, 0.0, 0.0);
+
+      public static final double kVelocityInput = -0.05; //edit
+      public static final double kVelocityOutput = 0.05; //edit
+      public static final double kPositionInput = -1.17;
+      public static final double kPositionOutput = 0;
+
+      public static final double kSoftLimitReverse = -25000;
+      public static final double kSoftLimitForward = 35000;
+
     }
 
     public static class IntakeConstants {

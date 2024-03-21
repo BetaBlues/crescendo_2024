@@ -25,6 +25,7 @@ import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ChassisSubsystem;
 import frc.robot.Subsystems.ClimbingSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
+import frc.robot.Subsystems.SeeSawSubsystem;
 //import frc.robot.Subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -39,6 +40,7 @@ public class RobotContainer {
   private final ChassisSubsystem m_chassis = Constants.hasDrive ?  new ChassisSubsystem() : null;
   private final IntakeSubsystem m_IntakeSubsystem = Constants.hasIntake ? new IntakeSubsystem() : null;
   private final ArmSubsystem m_ArmSubsystem = Constants.hasArm ? new ArmSubsystem() : null;
+  private final SeeSawSubsystem m_SeeSawSubsystem = Constants.hasSeesaw ? new SeeSawSubsystem() : null;
   private final ClimbingSubsystem m_ClimbingSubsystem = Constants.hasPiston ? new ClimbingSubsystem(PneumaticsModuleType.CTREPCM, 0, 1) : null;
   
   private Compressor m_compressor = new Compressor(PneumaticsModuleType.REVPH);
@@ -95,9 +97,10 @@ public class RobotContainer {
 
     if (Constants.hasSeesaw)
     {
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.moveToSawPosition()));
-      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.moveToSeePosition()));
-      m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
+      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.moveToInputPosition()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.moveToOutputPosition()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kX.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.stopMotor()));
+      m_SeeSawSubsystem.setDefaultCommand(new RunCommand(() -> m_SeeSawSubsystem.runAutomatic(), m_SeeSawSubsystem)); //before or after button config? --> believe after
     }
   }
 

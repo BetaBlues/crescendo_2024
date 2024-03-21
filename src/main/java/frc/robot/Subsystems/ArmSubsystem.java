@@ -72,22 +72,6 @@ public class ArmSubsystem extends SubsystemBase {
     // updateMotionProfile();
   }
 
-  public void moveToSawPosition()
-  {
-    //setTargetPosition(armEncoder.getPosition() + 1500);
-    setTargetPosition(Constants.ArmConstants.saw);
-
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
-  }
-
-  public void moveToSeePosition()
-  {
-    //setTargetPosition(armEncoder.getPosition() - 1500);
-    setTargetPosition(Constants.ArmConstants.see);
-    System.out.println("setpoint = " + m_setpoint);
-    System.out.println("current position = " + armEncoder.getPosition());
-  }
 
   /**
    * Sets the target position and updates the motion profile if the target position changed.
