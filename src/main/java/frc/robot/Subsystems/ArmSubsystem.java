@@ -159,7 +159,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
     else
     {
-      if(distToTarget < 0 && direction < 0)
+      /* if(distToTarget < 0 && direction < 0)
       {
         System.out.println("set velocity = " + ArmConstants.velocityUp);
 
@@ -171,11 +171,11 @@ public class ArmSubsystem extends SubsystemBase {
 
         armMotor.set(ArmConstants.velocityDown);
       }
-      else
-      {
+      else */
+      //{
         System.out.println("Stop Motor");
         armMotor.stopMotor();
-      }
+      //}
       }
 
   // if(Constants.hasArm)
