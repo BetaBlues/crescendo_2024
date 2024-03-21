@@ -71,11 +71,11 @@ public class ChassisSubsystem extends SubsystemBase{
     gyro.calibrate();
   }
 
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, Rotation2d gyroAngle) {
-    driveTrain.driveCartesian(ySpeed, xSpeed, zRotation, gyroAngle);
+  public void driveCartesian(double xSpeed, double ySpeed, double zRotation, Rotation2d gyroAngle) {
+    driveTrain.driveCartesian(xSpeed, ySpeed, zRotation, gyroAngle);
   }
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation) {
-    driveTrain.driveCartesian(ySpeed, xSpeed, zRotation);
+  public void driveCartesian(double xSpeed, double ySpeed, double zRotation) {
+    driveTrain.driveCartesian(xSpeed, ySpeed, zRotation);
   }
 
 
@@ -93,8 +93,8 @@ public class ChassisSubsystem extends SubsystemBase{
 
   
 
-  // public void driveFieldOriented(double xSpeed, double ySpeed, double zRotation) {
-  // }
+  public void driveFieldOriented(double xSpeed, double ySpeed, double zRotation) {
+  }
 
 
 /*

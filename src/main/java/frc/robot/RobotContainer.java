@@ -51,13 +51,13 @@ public class RobotContainer {
     
     m_chassis.setDefaultCommand(new DriveCommand(m_chassis, m_chassisController));
     //new method of moving chassis. Eliminates need for Chassis subsystem because the chassis is the defult command
-    /* 
+    
     m_chassis.setDefaultCommand(new RunCommand(() -> m_chassis.driveCartesian(
         m_chassisController.getRawAxis(k_xbox.leftYAxis) * Constants.k_chassis.normalDriveSpeed,
         -m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
         -m_chassisController.getRawAxis(k_xbox.rightXAxis) * Constants.k_chassis.normalRotationSpeed),
        m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
-*/
+
     new JoystickButton(m_MechanismController, k_xbox.buttonX).onTrue(new InstantCommand(() -> m_ClimbingSubsystem.toggleCommand())); 
     // m_ClimbingSubsystem.setDefaultCommand(new RunCommand(() -> m_ClimbingSubsystem.disableCompressor()));
 
@@ -66,20 +66,20 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //shooting/loading joystick
-    // final Joystick leftJoystick = new Joystick(0);
-    // m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
+    final Joystick leftJoystick = new Joystick(0);
+    m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
-    // m_ArmSubsystem.offsetPosition();
+    m_ArmSubsystem.offsetPosition();
 
-    // //arm position
-    // //loading
-    // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
-    // // //shooting
-    // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
-    // // //resting
-    // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
+    //arm position
+    //loading
+    new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
+    //shooting
+    new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
+    //resting
+    new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
 
-    // m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
+    m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
 
     //increase setpoint by 500
     // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
