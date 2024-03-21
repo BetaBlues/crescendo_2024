@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private PowerDistribution pdh;
 
+
 //  private IntakeSubsystem m_IntakeSubsystem;
 
   PneumaticsModuleType ctrepcm = PneumaticsModuleType.CTREPCM;
@@ -87,6 +88,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    
+
     CommandScheduler.getInstance().run();
 
     SmartDashboard.putNumber("Front Left Voltage", m_robotContainer.m_chassis.leftFrontMotor.getOutputCurrent());
@@ -95,7 +98,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Back Right Voltage", m_robotContainer.m_chassis.rightRearMotor.getOutputCurrent());
 
     SmartDashboard.putNumber("Voltage", pdh.getVoltage());
-    SmartDashboard.putNumber("Gyro Direction", m_robotContainer.gyro.getAngle());
+    // SmartDashboard.putNumber("Gyro Direction", m_robotContainer.gyro.getAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

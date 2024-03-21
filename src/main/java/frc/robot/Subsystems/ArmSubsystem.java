@@ -47,8 +47,8 @@ public class ArmSubsystem extends SubsystemBase {
     // create a new SPARK MAX and configure it
     armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, MotorType.kBrushless);
     armMotor.setInverted(false);
-    armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
-    armMotor.setIdleMode(IdleMode.kCoast); 
+    armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimitArm); //edit depending on arm vs seesaw
+    armMotor.setIdleMode(IdleMode.kBrake); 
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     armMotor.setSoftLimit(SoftLimitDirection.kForward, (float) Constants.ArmConstants.kSoftLimitForward);
@@ -57,8 +57,8 @@ public class ArmSubsystem extends SubsystemBase {
     // set up the motor encoder including conversion factors to convert to radians and radians per
     // second for position and velocity
     armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); 
-    armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
-    armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
+    // armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
+    // armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
     armEncoder.setPosition(0.0);
 
     armController = armMotor.getPIDController();
@@ -76,9 +76,26 @@ public class ArmSubsystem extends SubsystemBase {
     // updateMotionProfile();
   }
 
+  public void moveToSawPosition()
+  {
+    //setTargetPosition(armEncoder.getPosition() + 1500);
+    setTargetPosition(Constants.ArmConstants.saw);
+
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
+  }
+
+  public void moveToSeePosition()
+  {
+    //setTargetPosition(armEncoder.getPosition() - 1500);
+    setTargetPosition(Constants.ArmConstants.see);
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
+  }
+
   public void inc_setpoint()
   {
-    setTargetPosition(armEncoder.getPosition() + 1500);
+    setTargetPosition(armEncoder.getPosition() + 1000);
 
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -86,7 +103,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    setTargetPosition(armEncoder.getPosition() - 1500);
+    setTargetPosition(armEncoder.getPosition() - 1000);
     
     System.out.println("setpoint = " + m_setpoint);
     System.out.println("current position = " + armEncoder.getPosition());
@@ -148,7 +165,7 @@ public class ArmSubsystem extends SubsystemBase {
 
       return;
     }
-
+   
     if(distToTarget < 0 && direction < 0)
     {
       System.out.println("set velocity = " + ArmConstants.velocityUp);
@@ -166,10 +183,31 @@ public class ArmSubsystem extends SubsystemBase {
       System.out.println("Stop Motor");
       armMotor.stopMotor();
     }
-
+    
     System.out.println("distance to target = " + distToTarget);
     System.out.println("current position = " + armEncoder.getPosition());
     System.out.println("setpoint = " + m_setpoint);
+  }
+
+  // if(Constants.hasArm)
+  //   if(distToTarget < 0 && direction < 0)
+  //   {
+  //     System.out.println("set velocity = " + ArmConstants.velocityUp);
+
+  //     armMotor.set(ArmConstants.velocityUp);
+  //   }
+  //   else if(distToTarget > 0 && direction > 0)
+  //   {
+  //     System.out.println("set velocity = " + ArmConstants.velocityDown);
+
+  //     armMotor.set(ArmConstants.velocityDown);
+  //   }
+  //   else
+  //   {
+  //     System.out.println("Stop Motor");
+  //     armMotor.stopMotor();
+  //   }
+    
 
     // if (m_profile.isFinished(elapsedTime)) {
     //   m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
@@ -193,7 +231,7 @@ public class ArmSubsystem extends SubsystemBase {
     //         armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
     // armController.setReference(
     //     m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
-  }
+  
 
   /**
    * Drives the arm using the provided power value (usually from a joystick). This also adds in the
@@ -224,9 +262,11 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void offsetPosition() 
   {
+    //armEncoder.setPosition(0.0);
+
     m_positionResting = armEncoder.getPosition();
 
-    m_positionShooting = m_positionResting + ArmConstants.incShooting;
+    m_positionShooting = m_positionResting; //+ ArmConstants.incShooting;
     m_positionLoading = m_positionResting + ArmConstants.incLoading;
   }
 

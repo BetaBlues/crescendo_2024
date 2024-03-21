@@ -18,11 +18,16 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public final static boolean hasDrive = true;
+  public final static boolean hasPiston = true;
+  public final static boolean hasIntake = true;
+  public final static boolean hasSeesaw = false;
+  public final static boolean hasArm = true;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
+
   public final class k_chassis {
     //Chassis Motor ports
     public final static int leftFrontMotorPort = 13;
@@ -71,15 +76,21 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final double incShooting = 5000; //edit
+      public static final double incShooting = 4500; //edit
       public static final double incLoading = 19100; //edit
       public static final double velocityUp = -0.5; //edit
-      public static final double velocityDown = 0.4; //edit
+      public static final double velocityDown = 0.3; //edit
 
+      public static final double seesawVelUp = -0.03; //edit
+      public static final double seesawVelDown = 0.03; //edit
+      public static final double see = 300;
+      public static final double saw = 600;
 
+      //public static final int kArmCanId = 8;
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
-      public static final int kCurrentLimit = 57;
+      public static final int kCurrentLimitArm = 45;
+      public static final int kCurrentLimitSeesaw = 20;
 
       public static final double kSoftLimitReverse = -25000;
       public static final double kSoftLimitForward = 35000;
@@ -108,8 +119,8 @@ public final class Constants {
   
       
   
-      public static final double intakeSpeed = 0.2; //edit
-      public static final double outputSpeed = -0.75; //edit
+      public static final double intakeSpeed = 0.75; //edit
+      public static final double outputSpeed = -0.2; //edit
         // negative = counter-clockwise (?)
         // positive = clockwise (?)
 
