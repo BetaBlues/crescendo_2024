@@ -120,6 +120,7 @@ public class SeeSawSubsystem extends SubsystemBase {
         seeSawController.stopMotor();
         return;
     }
+    
     if(distToTarget < 0 && m_direction < 0)
     {
         System.out.println("set velocity = " + SeeSawConstants.kVelocityInput);

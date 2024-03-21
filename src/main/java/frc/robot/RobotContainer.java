@@ -105,13 +105,10 @@ public class RobotContainer {
     }
   }
 
-  
-
-
-  
- public Command getAutonomousCommand() {
+ public Command getAutonomousCommand() 
+ {
   Command manualLeave = new RunCommand(() -> m_chassis.driveCartesian(0.7, 0, 0), m_chassis).withTimeout(4); 
-  
+
   return manualLeave;
  }
 

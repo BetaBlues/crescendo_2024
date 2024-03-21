@@ -172,25 +172,6 @@ public class ArmSubsystem extends SubsystemBase {
     System.out.println("current position = " + armEncoder.getPosition());
     System.out.println("setpoint = " + m_setpoint);
   }
-
-  // if(Constants.hasArm)
-  //   if(distToTarget < 0 && direction < 0)
-  //   {
-  //     System.out.println("set velocity = " + ArmConstants.velocityUp);
-
-  //     armMotor.set(ArmConstants.velocityUp);
-  //   }
-  //   else if(distToTarget > 0 && direction > 0)
-  //   {
-  //     System.out.println("set velocity = " + ArmConstants.velocityDown);
-
-  //     armMotor.set(ArmConstants.velocityDown);
-  //   }
-  //   else
-  //   {
-  //     System.out.println("Stop Motor");
-  //     armMotor.stopMotor();
-  //   }
     
 
     // if (m_profile.isFinished(elapsedTime)) {
