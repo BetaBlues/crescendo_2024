@@ -266,7 +266,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_positionResting = armEncoder.getPosition();
 
-    m_positionShooting = m_positionResting; //+ ArmConstants.incShooting;
+    m_positionShooting = m_positionResting + ArmConstants.incShooting;
     m_positionLoading = m_positionResting + ArmConstants.incLoading;
   }
 

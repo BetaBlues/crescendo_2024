@@ -80,16 +80,16 @@ public class RobotContainer {
       m_ArmSubsystem.offsetPosition();
 
       //arm position                                                                                                                                                      --
-      //loading
-      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
-      //shooting
-      new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
-      // //resting
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
+      // //loading
+      // new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
+      // //shooting
+      // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
+      // // //resting
+      // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
 
       
-      // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
-      // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
 
       m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
     }

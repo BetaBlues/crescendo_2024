@@ -76,7 +76,7 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final double incShooting = 4500; //edit
+      public static final double incShooting = 5500; //edit
       public static final double incLoading = 19100; //edit
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.3; //edit
