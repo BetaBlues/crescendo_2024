@@ -32,10 +32,10 @@ public final class Constants {
     // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
     // 2 5 0 1
     //chassis speeds
-    public final static double normalDriveSpeed = 0.6;
-    public final static double slowDriveSpeed = 0.5;
-    public final static double normalRotationSpeed = 0.5;
-    public final static double slowRotationSpeed = 0.2;
+    public final static double normalDriveSpeed = 0.95;
+    public final static double slowDriveSpeed = 0.9;
+    public final static double normalRotationSpeed = 0.9;
+    public final static double slowRotationSpeed = 0.85;
     
     public final static double inPerSecSpeed = 1; //edit
 
@@ -71,7 +71,7 @@ public final class Constants {
       // public static final double p_speedSlow = 0.1; //edit
       // public static final double p_speedFast = 0.25; //edit 
 
-      public static final double incShooting = 4500; //edit
+      public static final double incShooting = 5000; //edit
       public static final double incLoading = 19100; //edit
       public static final double velocityUp = -0.5; //edit
       public static final double velocityDown = 0.4; //edit
