@@ -7,6 +7,8 @@ package frc.robot;
 
 import java.time.Instant;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 //import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -46,7 +48,7 @@ public class RobotContainer {
   //creates controller
   XboxController m_chassisController = new XboxController(1); //connect XboxController to port 1
   XboxController m_MechanismController = new XboxController(0); //connect XboxController to port 0
-  ADXRS450_Gyro gyro = new ADXRS450_Gyro(); // Creates an ADXRS450_Gyro object on the onboard SPI port
+  AHRS gyro = new AHRS(); // Creates an ADXRS450_Gyro object on the onboard SPI port
   
   public RobotContainer() {
     configureButtonBindings();
@@ -58,7 +60,7 @@ public class RobotContainer {
         m_chassisController.getRawAxis(k_xbox.leftYAxis) * Constants.k_chassis.normalDriveSpeed,
         -m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
         -m_chassisController.getRawAxis(k_xbox.rightXAxis) * Constants.k_chassis.normalRotationSpeed), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
- 
+
     //field oriented
   //  m_chassis.setDefaultCommand(new DriveCommand(m_chassis, m_chassisController));
 
@@ -72,7 +74,7 @@ public class RobotContainer {
 
     //shooting/loading joystick
     final Joystick leftJoystick = new Joystick(0);
-    m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
+    m_IntakeSubsystem.  setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(leftJoystick.getY()), m_IntakeSubsystem));
     
     m_ArmSubsystem.offsetPosition();
 

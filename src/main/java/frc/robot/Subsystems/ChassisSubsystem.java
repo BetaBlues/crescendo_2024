@@ -4,21 +4,28 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel;
 
 //import com.ctre.phoenix.motorcontrol.can.CANSparkMax;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,20 +43,79 @@ public class ChassisSubsystem extends SubsystemBase{
   public CANSparkMax leftRearMotor;
   public CANSparkMax rightFrontMotor;
   public CANSparkMax rightRearMotor;
+/* 
+  public WPI_VictorSPX leftFrontMotor; 
+  public WPI_VictorSPX leftRearMotor;
+  public WPI_VictorSPX rightFrontMotor;
+  public WPI_VictorSPX rightRearMotor; */
   private MecanumDrive driveTrain;
-  private ADXRS450_Gyro gyro; 
+  private AHRS gyro; 
 
   public ChassisSubsystem() {
     leftFrontMotor = new CANSparkMax(Constants.k_chassis.leftFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
     leftRearMotor = new CANSparkMax(Constants.k_chassis.leftRearMotorPort, CANSparkLowLevel.MotorType.kBrushed);
     rightFrontMotor = new CANSparkMax(Constants.k_chassis.rightFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
     rightRearMotor = new CANSparkMax(Constants.k_chassis.rightRearMotorPort, CANSparkLowLevel.MotorType.kBrushed);
+    
+    
+    /* 
+    leftFrontMotor = new WPI_VictorSPX(1);
+    leftRearMotor = new WPI_VictorSPX(5);
+    rightFrontMotor = new WPI_VictorSPX(2);
+    rightRearMotor = new WPI_VictorSPX(0);*/
+    
+    
     rightFrontMotor.setInverted(true);
     rightRearMotor.setInverted(true);
     driveTrain = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 
-    gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
+    gyro = new AHRS(SPI.Port.kMXP);}
+    /* 
+
+    AutoBuilder.configureHolonomic( //TODO: get pose methods
+            this::getPose, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            this::driveCartesian, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    4.5, // Max module speed, in m/s
+                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            ),
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
   }
+
+  public Pose2d getPose(){
+    
+  }
+
+  public void resetPose(){
+
+  }
+
+  public ChassisSpeeds getRobotRelativeSpeeds(){
+
+    return 
+
+  }
+
+ */
+
+  
 
   public void driveFieldOriented(XboxController controller){
     double forward = -controller.getRawAxis(1);
@@ -71,15 +137,15 @@ public class ChassisSubsystem extends SubsystemBase{
   }
 
   private void resetGyroAngle(){
-    gyro.calibrate();
+    gyro.reset();
   }
 
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, Rotation2d gyroAngle) {
-    driveTrain.driveCartesian(ySpeed, xSpeed, zRotation, gyroAngle);
+  public void driveCartesian(double xSpeed, double ySpeed, double zRotation, Rotation2d gyroAngle) {
+    driveTrain.driveCartesian(xSpeed, ySpeed, zRotation, gyroAngle);
   }
 
 
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation)
+  public void driveCartesian(double xSpeed, double ySpeed, double zRotation)
   {
     driveTrain.driveCartesian(xSpeed, ySpeed, zRotation);
   }
@@ -91,6 +157,13 @@ public class ChassisSubsystem extends SubsystemBase{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public Command followPathCommand(String pathName){
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+    return AutoBuilder.followPath(path);
+
   }
 
 

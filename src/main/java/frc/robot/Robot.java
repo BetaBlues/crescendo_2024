@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
+
+import org.littletonrobotics.junction.LoggedRobot;
+
 import edu.wpi.first.cameraserver.CameraServer;
 
 
@@ -28,7 +31,7 @@ import edu.wpi.first.cameraserver.CameraServer;
  * the package after creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot /*extends TimedRobot*/ {
+public class Robot extends LoggedRobot/*extends TimedRobot*/ {
 
   private Command m_autonomousCommand;
 

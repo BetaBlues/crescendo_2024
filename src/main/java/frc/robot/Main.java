@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LoggedRobot;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -11,7 +13,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  * you are doing, do not modify this file except to change the parameter class to the startRobot
  * call.
  */
-public final class Main extends RobotBase{
+public final class Main extends LoggedRobot{
   private Main() {}
 
   /**
