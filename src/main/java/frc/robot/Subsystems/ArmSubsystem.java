@@ -11,7 +11,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkRelativeEncoder;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
@@ -22,6 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private RelativeEncoder armEncoder;
   private SparkPIDController armController;
+  
   private double m_setpoint;
 
   // private TrapezoidProfile m_profile;
@@ -53,8 +57,8 @@ public class ArmSubsystem extends SubsystemBase {
     // set up the motor encoder including conversion factors to convert to radians and radians per
     // second for position and velocity
     armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); 
-    armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
-    armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
+    // armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
+    // armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
     armEncoder.setPosition(0.0);
 
     armController = armMotor.getPIDController();
@@ -72,6 +76,22 @@ public class ArmSubsystem extends SubsystemBase {
     // updateMotionProfile();
   }
 
+
+  public void inc_setpoint()
+  {
+    setTargetPosition(armEncoder.getPosition() + 1000);
+
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
+  }
+
+  public void dec_setpoint()
+  {
+    setTargetPosition(armEncoder.getPosition() - 1000);
+    
+    System.out.println("setpoint = " + m_setpoint);
+    System.out.println("current position = " + armEncoder.getPosition());
+  }
 
   /**
    * Sets the target position and updates the motion profile if the target position changed.
@@ -129,6 +149,7 @@ public class ArmSubsystem extends SubsystemBase {
 
       return;
     }
+   
     if(distToTarget < 0 && direction < 0)
     {
       System.out.println("set velocity = " + ArmConstants.velocityUp);
@@ -143,24 +164,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
     else
     {
-      /* if(distToTarget < 0 && direction < 0)
-      {
-        System.out.println("set velocity = " + ArmConstants.velocityUp);
-
-        armMotor.set(ArmConstants.velocityUp);
-      }
-      else if(distToTarget > 0 && direction > 0)
-      {
-        System.out.println("set velocity = " + ArmConstants.velocityDown);
-
-        armMotor.set(ArmConstants.velocityDown);
-      }
-      else */
-      //{
-        System.out.println("Stop Motor");
-        armMotor.stopMotor();
-      //}
-      }
+      System.out.println("Stop Motor");
+      armMotor.stopMotor();
+    }
+    
+    System.out.println("distance to target = " + distToTarget);
+    System.out.println("current position = " + armEncoder.getPosition());
+    System.out.println("setpoint = " + m_setpoint);
+  }
 
   // if(Constants.hasArm)
   //   if(distToTarget < 0 && direction < 0)
@@ -181,9 +192,6 @@ public class ArmSubsystem extends SubsystemBase {
   //     armMotor.stopMotor();
   //   }
     
-    System.out.println("distance to target = " + distToTarget);
-    System.out.println("current position = " + armEncoder.getPosition());
-    System.out.println("setpoint = " + m_setpoint);
 
     // if (m_profile.isFinished(elapsedTime)) {
     //   m_targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
@@ -207,7 +215,7 @@ public class ArmSubsystem extends SubsystemBase {
     //         armEncoder.getPosition() + Constants.ArmConstants.kArmZeroCosineOffset, m_targetState.velocity);
     // armController.setReference(
     //     m_targetState.position, CANSparkMax.ControlType.kPosition, 0, m_feedforward);
-  }
+  
 
   /**
    * Drives the arm using the provided power value (usually from a joystick). This also adds in the
@@ -229,15 +237,20 @@ public class ArmSubsystem extends SubsystemBase {
   //   m_manualValue = _power; // this variable is only used for logging or debugging if needed
   // }
 
-  // @Override
-  // public void periodic() { // This method will be called once per scheduler run
-  // }
+  @Override
+  public void periodic() { 
+    // This method will be called once per scheduler run
+
+    System.out.println("current position: " + armEncoder.getPosition());
+  }
 
   public void offsetPosition() 
   {
+    //armEncoder.setPosition(0.0);
+
     m_positionResting = armEncoder.getPosition();
 
-    m_positionShooting = m_positionResting + ArmConstants.incShooting;
+    m_positionShooting = m_positionResting; //+ ArmConstants.incShooting;
     m_positionLoading = m_positionResting + ArmConstants.incLoading;
   }
 

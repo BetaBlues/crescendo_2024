@@ -19,7 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public final static boolean hasDrive = true;
-  public final static boolean hasPiston = false;
+  public final static boolean hasPiston = true;
   public final static boolean hasIntake = true;
   public final static boolean hasSeesaw = true;
   public final static boolean hasArm = true;
@@ -37,10 +37,10 @@ public final class Constants {
     // 5 2 1 0 is technically correct but i changed it so that it would drive correctrly 
     // 2 5 0 1
     //chassis speeds
-    public final static double normalDriveSpeed = 0.9;
-    public final static double slowDriveSpeed = 0.5;
-    public final static double normalRotationSpeed = 0.5;
-    public final static double slowRotationSpeed = 0.2;
+    public final static double normalDriveSpeed = 0.95;
+    public final static double slowDriveSpeed = 0.9;
+    public final static double normalRotationSpeed = 0.9;
+    public final static double slowRotationSpeed = 0.85;
     
     public final static double inPerSecSpeed = 1; //edit
 
@@ -131,8 +131,8 @@ public final class Constants {
   
       
   
-      public static final double intakeSpeed = 0.2; //edit
-      public static final double outputSpeed = -0.75; //edit
+      public static final double intakeSpeed = 0.75; //edit
+      public static final double outputSpeed = -0.2; //edit
         // negative = counter-clockwise (?)
         // positive = clockwise (?)
 
