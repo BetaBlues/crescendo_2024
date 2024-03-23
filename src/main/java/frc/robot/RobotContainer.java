@@ -47,7 +47,7 @@ public class RobotContainer {
   XboxController m_chassisController = new XboxController(1); //connect XboxController to port 1
   XboxController m_MechanismController = new XboxController(0); //connect XboxController to port 0
   // ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kMXP); // Creates an ADXRS450_Gyro object on the onboard SPI port
-  
+
   public RobotContainer() {
     configureButtonBindings();
     
@@ -81,6 +81,7 @@ public class RobotContainer {
     {
       m_ArmSubsystem.offsetPosition();
 
+      
       //arm position                                                                                                                                                      --
       //loading
       new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
@@ -98,10 +99,7 @@ public class RobotContainer {
 
     if (Constants.hasSeesaw)
     {
-      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.moveToInputPosition()));
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.moveToOutputPosition()));
-      new JoystickButton(m_MechanismController, XboxController.Button.kX.value).onTrue(new InstantCommand(() -> m_SeeSawSubsystem.stopMotor()));
-      m_SeeSawSubsystem.setDefaultCommand(new RunCommand(() -> m_SeeSawSubsystem.runAutomatic(), m_SeeSawSubsystem)); //before or after button config? --> believe after
+      m_SeeSawSubsystem.setDefaultCommand(new RunCommand(() -> m_SeeSawSubsystem.MoveArm(m_MechanismController.getRightY()), m_SeeSawSubsystem));
     }
   }
 

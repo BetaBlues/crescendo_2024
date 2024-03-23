@@ -135,5 +135,22 @@ public class SeeSawSubsystem extends SubsystemBase {
         System.out.println("Stop Motor");
         seeSawController.stopMotor();
     }
-  }    
+  }  
+  
+  public void MoveArm (double joystickPosition)
+  {
+      if(joystickPosition > 0.25)
+      {
+          seeSawController.set(SeeSawConstants.kVelocityInput); 
+      }
+      else if(joystickPosition < -0.25)
+      {
+          seeSawController.set(SeeSawConstants.kVelocityOutput); 
+      }
+      else
+      {
+        seeSawController.stopMotor();
+      }
+  }
 }
+
