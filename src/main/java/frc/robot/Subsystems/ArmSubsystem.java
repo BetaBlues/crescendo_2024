@@ -15,6 +15,7 @@ import com.revrobotics.SparkRelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.PIDGains;
@@ -24,8 +25,12 @@ import frc.robot.Constants.IntakeConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
-  private RelativeEncoder armEncoder;
-  private SparkPIDController armController;
+  private static Encoder armEncoder;
+ 
+ // private RelativeEncoder armEncoder; 
+  private PIDController armController;
+  
+  //private SparkPIDController armController;
   
   private double m_setpoint;
 
@@ -43,6 +48,10 @@ public class ArmSubsystem extends SubsystemBase {
   private double m_positionLoading;
   private double direction;
 
+  private final double[] setpoints = {0.0, 80.0, 90.0}; 
+  private int setpointIndex = 0; 
+
+
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     // create a new SPARK MAX and configure it
@@ -57,18 +66,37 @@ public class ArmSubsystem extends SubsystemBase {
 
     // set up the motor encoder including conversion factors to convert to radians and radians per
     // second for position and velocity
-    armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); 
-    // armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
-    // armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
-    armEncoder.setPosition(0.0);
+     /*armEncoder = armMotor.getEncoder(SparkRelativeEncoder.Type.kHallSensor, 42); 
+       PIDGains.setSparkMaxGains(armController, Constants.ArmConstants.kArmPositionGains);
+       
+       
+       
+       */
 
-    armController = armMotor.getPIDController();
-    PIDGains.setSparkMaxGains(armController, Constants.ArmConstants.kArmPositionGains);
+    armEncoder.setDistancePerPulse(1.0 / 2048.0);
+    armController = new PIDController(0.1, 0, 0);
+    armController.setTolerance(3); 
+    armController.setIntegratorRange(-1.0, 1.0); 
+    //armEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k2X);
+   
+   
+   
+   //  armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
+   //  armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
+    int ticksAt90Degs = calculateTicksForAngle(90);
+   armEncoder.reset();
+    armEncoder.setDistancePerPulse(360 / ticksAt90Degs);
+
+
+   
 
     armMotor.burnFlash();
 
-    m_setpoint = armEncoder.getPosition(); // position = 0 at this point
+   // m_setpoint = armEncoder.getPosition(); // position = 0 at this point
 
+    m_setpoint = ArmSubsystem.getArmAngle(); 
+
+    //m_setpoint = armEncoder.getDistancePerPulse(); 
     direction = 0.0;
 
     // m_timer = new Timer();
@@ -76,6 +104,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     // updateMotionProfile();
   }
+
+
 
   public void moveToSawPosition()
   {
@@ -96,7 +126,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void inc_setpoint()
   {
+    /* 
     setTargetPosition(armEncoder.getPosition() + 1000);
+*/
+    setTargetPosition(armEncoder.getDistancePerPulse()+ 1000);
 
     // System.out.println("setpoint = " + m_setpoint);
     // System.out.println("current position = " + armEncoder.getPosition());
@@ -104,10 +137,18 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void dec_setpoint()
   {
-    setTargetPosition(armEncoder.getPosition() - 1000);
+    /*setTargetPosition(armEncoder.getPosition() - 1000);
+*/
+    setTargetPosition(armEncoder.getDistancePerPulse() - 1000);
     
     // System.out.println("setpoint = " + m_setpoint);
     // System.out.println("current position = " + armEncoder.getPosition());
+  }
+
+  private int calculateTicksForAngle(double angle){
+    double ticksPerRev = 2048.0; 
+    double ticksFor90Degs = ticksPerRev / 4.0; 
+    return (int) (ticksFor90Degs * (angle / 90.0)); 
   }
 
   /**
@@ -116,7 +157,7 @@ public class ArmSubsystem extends SubsystemBase {
    * @param _setpoint The new target position in radians.
    */
   public void setTargetPosition(double pGoal) {
-    if (armEncoder.getPosition() != pGoal) {
+    /*if (armEncoder.getPosition() != pGoal) {
       m_setpoint = pGoal;
       // updateMotionProfile();
 
@@ -133,7 +174,39 @@ public class ArmSubsystem extends SubsystemBase {
         direction = 0;
       }
       System.out.println("setting setpoint = " + m_setpoint);
+    }*/
+    
+    if (ArmSubsystem.getArmAngle() != pGoal) {
+      m_setpoint = pGoal;
+      // updateMotionProfile();
+
+      if(pGoal > ArmSubsystem.getArmAngle())
+      {
+        direction = 1.0;
+      }
+      else if (pGoal < ArmSubsystem.getArmAngle())
+      {
+        direction = -1.0;
+      }
+      else
+      {
+        direction = 0;
+      }
+      System.out.println("setting setpoint = " + m_setpoint);
     }
+
+  }
+
+  public static double getArmAngle(){
+
+    //raw poistion in encoder units
+    int rawPosition = armEncoder.getRaw(); 
+
+    double ticksPerRev = 2048.0; 
+    double degsPerTick = 360.0 / ticksPerRev; 
+    double angle = rawPosition * degsPerTick; 
+
+    return angle; 
   }
 
 
@@ -159,7 +232,9 @@ public class ArmSubsystem extends SubsystemBase {
     // double elapsedTime = m_timer.get();
     double distToTarget = 0;
 
-    distToTarget = m_setpoint - armEncoder.getPosition();
+  //  distToTarget = m_setpoint - armEncoder.getPosition();
+
+    distToTarget = m_setpoint - ArmSubsystem.getArmAngle(); 
     if(Math.abs(distToTarget) < 25)
     {
       armMotor.stopMotor();
@@ -274,17 +349,19 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() { 
     // This method will be called once per scheduler run
 
-    System.out.println("current position: " + armEncoder.getPosition());
+   // System.out.println("current position: " + armEncoder.getPosition());
   }
 
   public void offsetPosition() 
   {
     //armEncoder.setPosition(0.0);
 
-    m_positionResting = armEncoder.getPosition();
-
-    m_positionShooting = m_positionResting + ArmConstants.incShooting;
-    m_positionLoading = m_positionResting + ArmConstants.incLoading;
+ /*   m_positionResting = armEncoder.getPosition();
+ m_positionShooting = m_positionResting + ArmConstants.incShooting;
+ m_positionLoading = m_positionResting + ArmConstants.incLoading;*/
+    m_positionResting = 90; 
+    m_positionShooting = 80; 
+    m_positionLoading = 0; 
   }
 
   public void position_Shooting()

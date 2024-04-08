@@ -89,7 +89,7 @@ public final class Constants {
       //public static final int kArmCanId = 8;
       public static final int kArmCanId = 8;
       public static final boolean kArmInverted = false;
-      public static final int kCurrentLimitArm = 45;
+      public static final int kCurrentLimitArm = 58;
       public static final int kCurrentLimitSeesaw = 20;
 
       public static final double kSoftLimitReverse = -25000;

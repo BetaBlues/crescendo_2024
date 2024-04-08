@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ArmConstants;
 //import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -51,15 +52,16 @@ public class RobotContainer {
     
     if (Constants.hasDrive)
     { 
-      m_chassis.setDefaultCommand(new DriveCommand(m_chassis, m_chassisController));
+     m_chassis.setDefaultCommand(new DriveCommand(m_chassis, m_chassisController));
     //new method of moving chassis. Eliminates need for Chassis subsystem because the chassis is the defult command
     
-    
+   /* 
       m_chassis.setDefaultCommand(new RunCommand(() -> m_chassis.driveCartesian(
           m_chassisController.getRawAxis(k_xbox.leftYAxis) * Constants.k_chassis.normalDriveSpeed,
           -m_chassisController.getRawAxis(k_xbox.leftXAxis) * Constants.k_chassis.normalDriveSpeed,
           m_chassisController.getRawAxis(k_xbox.rightXAxis) * -1 * Constants.k_chassis.normalRotationSpeed), m_chassis)); //eventually should add the gyro sensor as a 4th parameter. This will make feild orriented drive work.
-    }
+   */
+        }
     if (Constants.hasPiston)
     {
       new JoystickButton(m_MechanismController, k_xbox.buttonX).onTrue(new InstantCommand(() -> m_ClimbingSubsystem.toggleCommand())); 
@@ -68,32 +70,42 @@ public class RobotContainer {
   }
   
   private void configureButtonBindings() {
+    if(Constants.hasDrive){
+
+      new JoystickButton(m_chassisController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_chassis.stopComplete()));
+    }
+    
     if (Constants.hasIntake)
     {
       //shooting/loading joystick
       // final Joystick leftJoystick = new Joystick(0);
-      m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> m_IntakeSubsystem.IntakeSpeed(m_MechanismController.getLeftY()), m_IntakeSubsystem));
+      m_IntakeSubsystem.setDefaultCommand(new InstantCommand(() -> m_IntakeSubsystem.IntakeSpeed(m_MechanismController.getRightY()), m_IntakeSubsystem));
     }
 
     if(Constants.hasArm)
     {
       // final Joystick rightJoystick = new Joystick(5);
-      m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.MoveArm(m_MechanismController.getRightY()), m_ArmSubsystem));
+      m_ArmSubsystem.setDefaultCommand(
+        Commands.parallel(new RunCommand(() -> m_ArmSubsystem.MoveArm(m_MechanismController.getLeftY()), m_ArmSubsystem), new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)));
 
       m_ArmSubsystem.offsetPosition();
 
+
+      //brake motors 
+
+     
       //arm position                                                                                                                                                      --
-      //loading
-      new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
-      //shooting
+      // //loading
+     new JoystickButton(m_MechanismController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Loading()));
+      // //shooting
       new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Shooting()));
-      // //resting
-      new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
+      // // //resting
+       new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.position_Resting()));
 
-      // new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
-      // new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
+      new JoystickButton(m_MechanismController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.dec_setpoint()));
+       new JoystickButton(m_MechanismController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> m_ArmSubsystem.inc_setpoint()));
 
-      // m_ArmSubsystem.setDefaultCommand(new RunCommand(() -> m_ArmSubsystem.runAutomatic(), m_ArmSubsystem)); //before or after button config? --> believe after
+       //before or after button config? --> believe after
     }
 
     if (Constants.hasSeesaw)
@@ -109,7 +121,7 @@ public class RobotContainer {
 
   
  public Command getAutonomousCommand() {
-  Command manualLeave = new RunCommand(() -> m_chassis.driveCartesian(0.7, 0, 0), m_chassis).withTimeout(4); 
+  Command manualLeave = new RunCommand(() -> m_chassis.driveCartesian(0.3, 0, 0), m_chassis).withTimeout(2.5); 
   
   return manualLeave;
  }

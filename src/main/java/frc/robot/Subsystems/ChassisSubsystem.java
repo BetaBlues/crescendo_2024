@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.k_xbox;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import com.kauailabs.navx.frc.*;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -34,7 +36,7 @@ public class ChassisSubsystem extends SubsystemBase{
   public CANSparkMax rightFrontMotor;
   public CANSparkMax rightRearMotor;
   private MecanumDrive driveTrain;
-  private  ADXRS450_Gyro gyro; 
+  private AHRS gyro; 
 
   public ChassisSubsystem() {
     leftFrontMotor = new CANSparkMax(Constants.k_chassis.leftFrontMotorPort, CANSparkLowLevel.MotorType.kBrushed);
@@ -45,18 +47,23 @@ public class ChassisSubsystem extends SubsystemBase{
     rightRearMotor.setInverted(true);
     driveTrain = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 
-    gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
+    gyro = new AHRS(SPI.Port.kMXP);
+
+    driveTrain.driveCartesian(0.1, 0, 0);
+
   }
 
+
+
   public void driveFieldOriented(XboxController controller){
-    double forward = -controller.getRawAxis(1);
-    double strafe = controller.getRawAxis(0);
-    double rotation = controller.getRawAxis(4);
+    double forward = controller.getRawAxis(k_xbox.leftYAxis);
+    double strafe = controller.getRawAxis(k_xbox.leftXAxis);
+    double rotation = controller.getRawAxis(k_xbox.rightXAxis);
 
     double gyroAngle = gyro.getAngle(); 
     double radianAngle = Math.toRadians(gyroAngle);
     double temp = forward * Math.cos(radianAngle) + strafe * Math.sin(radianAngle);
-    strafe = -forward * Math.sin(radianAngle) + strafe * Math.cos(radianAngle);
+    strafe = forward * Math.sin(radianAngle) + strafe * Math.cos(radianAngle);
     forward = temp; 
 
     driveTrain.driveCartesian(strafe, forward, rotation);
@@ -68,7 +75,7 @@ public class ChassisSubsystem extends SubsystemBase{
   }
 
   private void resetGyroAngle(){
-    gyro.calibrate();
+    gyro.reset();
   }
 
   public void driveCartesian(double xSpeed, double ySpeed, double zRotation, Rotation2d gyroAngle) {
@@ -76,6 +83,14 @@ public class ChassisSubsystem extends SubsystemBase{
   }
   public void driveCartesian(double xSpeed, double ySpeed, double zRotation) {
     driveTrain.driveCartesian(xSpeed, ySpeed, zRotation);
+  }
+
+  public void stopComplete(){
+    driveTrain.driveCartesian(0, 0, 0);
+  }
+
+  public void driftSolve(){
+    driveTrain.driveCartesian(0.1, 0, 0);
   }
 
 
@@ -91,10 +106,7 @@ public class ChassisSubsystem extends SubsystemBase{
   }
 
 
-  
 
-  public void driveFieldOriented(double xSpeed, double ySpeed, double zRotation) {
-  }
 
 
 /*
